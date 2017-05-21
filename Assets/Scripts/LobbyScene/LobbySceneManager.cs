@@ -6,7 +6,7 @@ using System;
 
 public class LobbySceneManager : MonoBehaviour {
 
-    public protobuf_session session_;
+    private protobuf_session session_;
 
     public void OnConnect(bool result)
     {

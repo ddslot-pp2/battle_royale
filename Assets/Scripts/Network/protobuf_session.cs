@@ -10,7 +10,8 @@ public class protobuf_session : MonoBehaviour
 {
     private static protobuf_session instance_ = null;
 
-    const  String IP = "127.0.0.1";
+    //const  String IP = "127.0.0.1";
+    const String IP = "112.217.116.82";
     const int PORT = 3000;
 
     static private network_module network_module_;
