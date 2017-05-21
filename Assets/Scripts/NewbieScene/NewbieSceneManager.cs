@@ -161,11 +161,11 @@ public class NewbieSceneManager : MonoBehaviour {
             }
             else
             {
-                //enemyTankInfo.obj.transform.position = enemyTankInfo.last_info.pos;
-                //enemyTankInfo.obj.transform.rotation = enemyTankInfo.last_info.rot;
+                enemyTankInfo.obj.transform.position = enemyTankInfo.last_info.pos;
+                enemyTankInfo.obj.transform.rotation = enemyTankInfo.last_info.rot;
                 Debug.Log("보간안함");
             }
-            
+
         }
              
     }
