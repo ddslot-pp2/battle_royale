@@ -114,8 +114,9 @@ public class LobbySceneManager : MonoBehaviour {
             protobuf_session.delta_timestamp_ = diff_time;
 
             Debug.Log("-----@------");
-            Debug.Log(read.Timestamp);
-            Debug.Log(session_.getServerTimestamp());
+            //Debug.Log(read.Timestamp);
+            //Debug.Log(session_.getServerTimestamp());
+            Debug.Log("diff time: " + protobuf_session.delta_timestamp_);
             Debug.Log("-----------");
 
             UnityEngine.SceneManagement.SceneManager.LoadScene("Newbie");

@@ -146,7 +146,7 @@ public class NewbieSceneManager : MonoBehaviour {
             bool is_interpolation = true;
             if (renderTime <= t2 && renderTime >= t1 && is_interpolation)
             {
-                Debug.Log("보간함");
+               // Debug.Log("보간함");
                 // 서버에서 패킷이 올때까지 걸린시간
                 var total = t2 - t1;
 
@@ -163,7 +163,7 @@ public class NewbieSceneManager : MonoBehaviour {
             {
                 enemyTankInfo.obj.transform.position = enemyTankInfo.last_info.pos;
                 enemyTankInfo.obj.transform.rotation = enemyTankInfo.last_info.rot;
-                //Debug.Log("보간안함");
+                Debug.Log("보간안함");
             }
             
         }
@@ -285,6 +285,7 @@ public class NewbieSceneManager : MonoBehaviour {
 
             Debug.Log("client now: " + Now);
             Debug.Log("read timestamp: " + read.Timestamp);
+            Debug.Log("diff time: " + protobuf_session.delta_timestamp_);
 
             enemyTankInfo.last_info.timestamp = read.Timestamp;
             enemyTankInfo.last_info.pos = new Vector3(read.PosX, read.PosY, read.PosZ);
