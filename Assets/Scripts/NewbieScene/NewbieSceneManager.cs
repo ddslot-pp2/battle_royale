@@ -78,7 +78,7 @@ public class NewbieSceneManager : MonoBehaviour {
         session_.processor_SC_NOTI_LEAVE_FIELD = processor_SC_NOTI_LEAVE_FIELD;
     }
 
-    void Init()
+    void init()
     {
         EnterField();
     }
@@ -88,6 +88,7 @@ public class NewbieSceneManager : MonoBehaviour {
         enemies = new Dictionary<Int64, EnemyTankInfo>();
 
         session_ = protobuf_session.getInstance();
+
         session_.init();
         //session_.connect(IP, PORT); 
 
@@ -98,7 +99,7 @@ public class NewbieSceneManager : MonoBehaviour {
         RegisterProcessorHandler();
 
         interval_ = 0.0f;
-        Init();
+        init();
     }
 
     void Update()

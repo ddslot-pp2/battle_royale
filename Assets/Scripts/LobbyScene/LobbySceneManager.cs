@@ -108,9 +108,16 @@ public class LobbySceneManager : MonoBehaviour {
             var now = DateTime.Now.ToLocalTime();
             var span = (now - new DateTime(1970, 1, 1, 0, 0, 0, 0).ToLocalTime());
             var timestamp = (Int64)span.TotalMilliseconds;
+
+            Int64 diff_time = read.Timestamp - timestamp;
             
-            session_.delta_timestamp = read.Timestamp - timestamp;
-            
+            protobuf_session.delta_timestamp_ = diff_time;
+
+            Debug.Log("-----@------");
+            Debug.Log(read.Timestamp);
+            Debug.Log(session_.getServerTimestamp());
+            Debug.Log("-----------");
+
             UnityEngine.SceneManagement.SceneManager.LoadScene("Newbie");
         }
     }

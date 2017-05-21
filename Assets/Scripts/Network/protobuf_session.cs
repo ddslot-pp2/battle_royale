@@ -21,19 +21,19 @@ public class protobuf_session : MonoBehaviour
     public scene_on_connected    scene_connected_callback = null;
     public scene_on_disconnected scene_disconnected_callback = null;
 
-    public Int64 delta_timestamp;
+    static public Int64 delta_timestamp_;
 
     public Int64 getServerTimestamp()
     {
-        System.DateTime epochStart = new System.DateTime(1970, 1, 1, 0, 0, 0, System.DateTimeKind.Utc);
-        Int64 cur_time = (Int64)((System.DateTime.UtcNow - epochStart).TotalSeconds * 1000.0);
-        return cur_time;
+        //System.DateTime epochStart = new System.DateTime(1970, 1, 1, 0, 0, 0, System.DateTimeKind.Utc);
+        //Int64 cur_time = (Int64)((System.DateTime.UtcNow - epochStart).TotalSeconds * 1000.0);
+        //return cur_time;
 
-        //var now = DateTime.Now.ToLocalTime();
-        //var span = (now - new DateTime(1970, 1, 1, 0, 0, 0, 0).ToLocalTime());
-        //var timestamp = (Int64)span.TotalMilliseconds;
+        var now = DateTime.Now.ToLocalTime();
+        var span = (now - new DateTime(1970, 1, 1, 0, 0, 0, 0).ToLocalTime());
+        var timestamp = (Int64)span.TotalMilliseconds;
 
-        //return timestamp + delta_timestamp;
+        return timestamp + delta_timestamp_;
     }
     //public int recv_count = 0;
 
