@@ -125,8 +125,6 @@ public class NewbieSceneManager : MonoBehaviour {
     {
         foreach (var enemy_info in enemies)
         {
-            
-            Debug.Log("update Key: " + enemy_info.Key);
             var enemyTankInfo = enemy_info.Value;
 
             Int64 Now = session_.getServerTimestamp();
@@ -135,7 +133,6 @@ public class NewbieSceneManager : MonoBehaviour {
 
             //Debug.Log("Past: " + Past);
 
-            //var renderTime = Now - (Int64)Past;
             var renderTime = Now - Past;
 
             var t1 = enemyTankInfo.before_last_info.timestamp;
@@ -221,7 +218,7 @@ public class NewbieSceneManager : MonoBehaviour {
             var enemyTank = Instantiate(Resources.Load("Prefabs/EnemyTank2")) as GameObject;
             enemyTank.transform.position = pos;
 
-            Debug.Log("필드에 존재하는 유닛 key: " + other.Key);
+            //Debug.Log("필드에 존재하는 유닛 key: " + other.Key);
 
             var enemy_tank_info = new EnemyTankInfo();
             enemy_tank_info.obj = enemyTank;
@@ -229,8 +226,8 @@ public class NewbieSceneManager : MonoBehaviour {
             enemy_tank_info.before_last_info.timestamp = session_.getServerTimestamp();
             enemy_tank_info.before_last_info.pos = pos;
 
-            enemy_tank_info.last_info.pos = pos;
             enemy_tank_info.last_info.timestamp = session_.getServerTimestamp();
+            enemy_tank_info.last_info.pos = pos;
 
             enemies[other.Key] = enemy_tank_info;
 
@@ -250,11 +247,17 @@ public class NewbieSceneManager : MonoBehaviour {
         var enemyTank = Instantiate(Resources.Load("Prefabs/EnemyTank2")) as GameObject;
         enemyTank.transform.position = pos;
 
-        Debug.Log("들어온 친구 key: " + key);
+        //Debug.Log("들어온 친구 key: " + key);
         var enemy_tank_info = new EnemyTankInfo();
+
         enemy_tank_info.obj = enemyTank;
+
+        enemy_tank_info.before_last_info.timestamp = session_.getServerTimestamp();
         enemy_tank_info.before_last_info.pos = pos;
+
+        enemy_tank_info.last_info.timestamp = session_.getServerTimestamp();
         enemy_tank_info.last_info.pos = pos;
+
         enemies[key] = enemy_tank_info;
         Debug.Log("count: " + enemies.Count);
     }
@@ -273,7 +276,14 @@ public class NewbieSceneManager : MonoBehaviour {
         var enemyTankInfo = enemies[key];
         if (enemyTankInfo != null)
         {
-            enemyTankInfo.before_last_info = enemyTankInfo.last_info;
+            enemyTankInfo.before_last_info.timestamp = enemyTankInfo.last_info.timestamp;
+            enemyTankInfo.before_last_info.pos = enemyTankInfo.last_info.pos;
+            enemyTankInfo.before_last_info.rot = enemyTankInfo.last_info.rot;
+
+            Int64 Now = session_.getServerTimestamp();
+
+            Debug.Log("client now: " + Now);
+            Debug.Log("read timestamp: " + read.Timestamp);
 
             enemyTankInfo.last_info.timestamp = read.Timestamp;
             enemyTankInfo.last_info.pos = new Vector3(read.PosX, read.PosY, read.PosZ);
