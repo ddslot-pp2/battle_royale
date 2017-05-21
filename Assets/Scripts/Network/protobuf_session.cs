@@ -25,11 +25,15 @@ public class protobuf_session : MonoBehaviour
 
     public Int64 getServerTimestamp()
     {
-        var now = DateTime.Now.ToLocalTime();
-        var span = (now - new DateTime(1970, 1, 1, 0, 0, 0, 0).ToLocalTime());
-        var timestamp = (Int64)span.TotalMilliseconds;
+        System.DateTime epochStart = new System.DateTime(1970, 1, 1, 0, 0, 0, System.DateTimeKind.Utc);
+        Int64 cur_time = (Int64)((System.DateTime.UtcNow - epochStart).TotalSeconds * 1000.0);
+        return cur_time;
 
-        return timestamp + delta_timestamp;
+        //var now = DateTime.Now.ToLocalTime();
+        //var span = (now - new DateTime(1970, 1, 1, 0, 0, 0, 0).ToLocalTime());
+        //var timestamp = (Int64)span.TotalMilliseconds;
+
+        //return timestamp + delta_timestamp;
     }
     //public int recv_count = 0;
 

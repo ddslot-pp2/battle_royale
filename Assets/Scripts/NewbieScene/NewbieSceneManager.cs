@@ -145,7 +145,7 @@ public class NewbieSceneManager : MonoBehaviour {
             bool is_interpolation = true;
             if (renderTime <= t2 && renderTime >= t1 && is_interpolation)
             {
-                //Debug.Log("보간 해야함");
+                Debug.Log("보간함");
                 // 서버에서 패킷이 올때까지 걸린시간
                 var total = t2 - t1;
 
