@@ -159,10 +159,10 @@ public class NewbieSceneManager : MonoBehaviour {
                 enemyTankInfo.obj.transform.position = Vector3.Lerp(enemyTankInfo.before_last_info.pos, enemyTankInfo.last_info.pos, ratio);
                 enemyTankInfo.obj.transform.rotation = Quaternion.Slerp(enemyTankInfo.before_last_info.rot, enemyTankInfo.last_info.rot, ratio);
             }
-            else if (renderTime > t2)
+            else
             {
-                enemyTankInfo.obj.transform.position = enemyTankInfo.last_info.pos;
-                enemyTankInfo.obj.transform.rotation = enemyTankInfo.last_info.rot;
+                //enemyTankInfo.obj.transform.position = enemyTankInfo.last_info.pos;
+                //enemyTankInfo.obj.transform.rotation = enemyTankInfo.last_info.rot;
                 Debug.Log("보간안함");
             }
             
