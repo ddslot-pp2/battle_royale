@@ -37,7 +37,8 @@ namespace GAME {
             "RV9PQkpFQ1QSCwoDa2V5GAEgASgDEg0KBXBvc194GAIgASgCEg0KBXBvc195",
             "GAMgASgCEg0KBXBvc196GAQgASgCEg0KBXJvdF94GAUgASgCEg0KBXJvdF95",
             "GAYgASgCEg0KBXJvdF96GAcgASgCEg0KBXJvdF93GAggASgCEhEKCXRpbWVz",
-            "dGFtcBgJIAEoA2IGcHJvdG8z"));
+            "dGFtcBgJIAEoAyIcCgdDU19QSU5HEhEKCXRpbWVzdGFtcBgBIAEoAyIcCgdT",
+            "Q19QSU5HEhEKCXRpbWVzdGFtcBgBIAEoA2IGcHJvdG8z"));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
           new pbr::GeneratedClrTypeInfo(null, new pbr::GeneratedClrTypeInfo[] {
@@ -48,7 +49,9 @@ namespace GAME {
             new pbr::GeneratedClrTypeInfo(typeof(global::GAME.CS_LEAVE_FIELD), global::GAME.CS_LEAVE_FIELD.Parser, new[]{ "Key" }, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::GAME.SC_NOTI_LEAVE_FIELD), global::GAME.SC_NOTI_LEAVE_FIELD.Parser, new[]{ "Key" }, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::GAME.CS_MOVE_OBJECT), global::GAME.CS_MOVE_OBJECT.Parser, new[]{ "PosX", "PosY", "PosZ", "RotX", "RotY", "RotZ", "RotW", "Timestamp" }, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::GAME.SC_NOTI_MOVE_OBJECT), global::GAME.SC_NOTI_MOVE_OBJECT.Parser, new[]{ "Key", "PosX", "PosY", "PosZ", "RotX", "RotY", "RotZ", "RotW", "Timestamp" }, null, null, null)
+            new pbr::GeneratedClrTypeInfo(typeof(global::GAME.SC_NOTI_MOVE_OBJECT), global::GAME.SC_NOTI_MOVE_OBJECT.Parser, new[]{ "Key", "PosX", "PosY", "PosZ", "RotX", "RotY", "RotZ", "RotW", "Timestamp" }, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::GAME.CS_PING), global::GAME.CS_PING.Parser, new[]{ "Timestamp" }, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::GAME.SC_PING), global::GAME.SC_PING.Parser, new[]{ "Timestamp" }, null, null, null)
           }));
     }
     #endregion
@@ -1674,6 +1677,240 @@ namespace GAME {
             break;
           }
           case 72: {
+            Timestamp = input.ReadInt64();
+            break;
+          }
+        }
+      }
+    }
+
+  }
+
+  public sealed partial class CS_PING : pb::IMessage<CS_PING> {
+    private static readonly pb::MessageParser<CS_PING> _parser = new pb::MessageParser<CS_PING>(() => new CS_PING());
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public static pb::MessageParser<CS_PING> Parser { get { return _parser; } }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public static pbr::MessageDescriptor Descriptor {
+      get { return global::GAME.GAMEReflection.Descriptor.MessageTypes[8]; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    pbr::MessageDescriptor pb::IMessage.Descriptor {
+      get { return Descriptor; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public CS_PING() {
+      OnConstruction();
+    }
+
+    partial void OnConstruction();
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public CS_PING(CS_PING other) : this() {
+      timestamp_ = other.timestamp_;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public CS_PING Clone() {
+      return new CS_PING(this);
+    }
+
+    /// <summary>Field number for the "timestamp" field.</summary>
+    public const int TimestampFieldNumber = 1;
+    private long timestamp_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public long Timestamp {
+      get { return timestamp_; }
+      set {
+        timestamp_ = value;
+      }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override bool Equals(object other) {
+      return Equals(other as CS_PING);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public bool Equals(CS_PING other) {
+      if (ReferenceEquals(other, null)) {
+        return false;
+      }
+      if (ReferenceEquals(other, this)) {
+        return true;
+      }
+      if (Timestamp != other.Timestamp) return false;
+      return true;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override int GetHashCode() {
+      int hash = 1;
+      if (Timestamp != 0L) hash ^= Timestamp.GetHashCode();
+      return hash;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override string ToString() {
+      return pb::JsonFormatter.ToDiagnosticString(this);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void WriteTo(pb::CodedOutputStream output) {
+      if (Timestamp != 0L) {
+        output.WriteRawTag(8);
+        output.WriteInt64(Timestamp);
+      }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public int CalculateSize() {
+      int size = 0;
+      if (Timestamp != 0L) {
+        size += 1 + pb::CodedOutputStream.ComputeInt64Size(Timestamp);
+      }
+      return size;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void MergeFrom(CS_PING other) {
+      if (other == null) {
+        return;
+      }
+      if (other.Timestamp != 0L) {
+        Timestamp = other.Timestamp;
+      }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void MergeFrom(pb::CodedInputStream input) {
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            input.SkipLastField();
+            break;
+          case 8: {
+            Timestamp = input.ReadInt64();
+            break;
+          }
+        }
+      }
+    }
+
+  }
+
+  public sealed partial class SC_PING : pb::IMessage<SC_PING> {
+    private static readonly pb::MessageParser<SC_PING> _parser = new pb::MessageParser<SC_PING>(() => new SC_PING());
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public static pb::MessageParser<SC_PING> Parser { get { return _parser; } }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public static pbr::MessageDescriptor Descriptor {
+      get { return global::GAME.GAMEReflection.Descriptor.MessageTypes[9]; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    pbr::MessageDescriptor pb::IMessage.Descriptor {
+      get { return Descriptor; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public SC_PING() {
+      OnConstruction();
+    }
+
+    partial void OnConstruction();
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public SC_PING(SC_PING other) : this() {
+      timestamp_ = other.timestamp_;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public SC_PING Clone() {
+      return new SC_PING(this);
+    }
+
+    /// <summary>Field number for the "timestamp" field.</summary>
+    public const int TimestampFieldNumber = 1;
+    private long timestamp_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public long Timestamp {
+      get { return timestamp_; }
+      set {
+        timestamp_ = value;
+      }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override bool Equals(object other) {
+      return Equals(other as SC_PING);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public bool Equals(SC_PING other) {
+      if (ReferenceEquals(other, null)) {
+        return false;
+      }
+      if (ReferenceEquals(other, this)) {
+        return true;
+      }
+      if (Timestamp != other.Timestamp) return false;
+      return true;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override int GetHashCode() {
+      int hash = 1;
+      if (Timestamp != 0L) hash ^= Timestamp.GetHashCode();
+      return hash;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override string ToString() {
+      return pb::JsonFormatter.ToDiagnosticString(this);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void WriteTo(pb::CodedOutputStream output) {
+      if (Timestamp != 0L) {
+        output.WriteRawTag(8);
+        output.WriteInt64(Timestamp);
+      }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public int CalculateSize() {
+      int size = 0;
+      if (Timestamp != 0L) {
+        size += 1 + pb::CodedOutputStream.ComputeInt64Size(Timestamp);
+      }
+      return size;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void MergeFrom(SC_PING other) {
+      if (other == null) {
+        return;
+      }
+      if (other.Timestamp != 0L) {
+        Timestamp = other.Timestamp;
+      }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void MergeFrom(pb::CodedInputStream input) {
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            input.SkipLastField();
+            break;
+          case 8: {
             Timestamp = input.ReadInt64();
             break;
           }

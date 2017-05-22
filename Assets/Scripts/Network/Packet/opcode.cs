@@ -13,6 +13,8 @@ namespace network
 	SC_NOTI_LEAVE_FIELD = 2004,
 	CS_MOVE_OBJECT = 2005,
 	SC_NOTI_MOVE_OBJECT = 2006,
+	CS_PING = 2007,
+	SC_PING = 2008,
   };
 }
 

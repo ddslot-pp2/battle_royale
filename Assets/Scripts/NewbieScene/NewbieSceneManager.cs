@@ -30,6 +30,8 @@ public class NewbieSceneManager : MonoBehaviour {
     public Vector3 pos_;
     public Quaternion rot_;
 
+    private float ping_interval_;
+
     public void OnConnect(bool result)
     {
         if (result)
@@ -99,6 +101,7 @@ public class NewbieSceneManager : MonoBehaviour {
         RegisterProcessorHandler();
 
         interval_ = 0.0f;
+        ping_interval_ = 0.0f;
         init();
     }
 
@@ -107,7 +110,7 @@ public class NewbieSceneManager : MonoBehaviour {
         session_.process_packet();
 
         // 주인공 업데이트
-        if (interval_ > 300.0f)
+        if (interval_ > 200.0f)
         {
             Send_MOVE_OBJECT();
             interval_ = 0.0f;
@@ -116,6 +119,19 @@ public class NewbieSceneManager : MonoBehaviour {
         {
             var delta = Time.deltaTime;
             interval_ = interval_ + (delta * 1000);
+        }
+
+        if (ping_interval_ > 1000.0f)
+        {
+            protobuf_session.send_time = session_.getServerTimestamp();
+            GAME.CS_PING send = new GAME.CS_PING();
+            send.Timestamp = session_.getServerTimestamp();
+            session_.send_protobuf(opcode.CS_PING, send);
+            ping_interval_ = 0.0f;
+        }
+        else
+        {
+            ping_interval_ = ping_interval_ + (Time.deltaTime * 1000);
         }
 
         // 나머지 업데이트
@@ -134,7 +150,7 @@ public class NewbieSceneManager : MonoBehaviour {
 
             //Debug.Log("Past: " + Past);
 
-            var renderTime = Now - Past;
+            var renderTime = Now - Past - (protobuf_session.ping_time /2)  ;
 
             var t1 = enemyTankInfo.before_last_info.timestamp;
             var t2 = enemyTankInfo.last_info.timestamp;
@@ -146,7 +162,7 @@ public class NewbieSceneManager : MonoBehaviour {
             bool is_interpolation = true;
             if (renderTime <= t2 && renderTime >= t1 && is_interpolation)
             {
-               // Debug.Log("보간함");
+                //Debug.Log("보간함");
                 // 서버에서 패킷이 올때까지 걸린시간
                 var total = t2 - t1;
 
@@ -161,8 +177,8 @@ public class NewbieSceneManager : MonoBehaviour {
             }
             else
             {
-                enemyTankInfo.obj.transform.position = enemyTankInfo.last_info.pos;
-                enemyTankInfo.obj.transform.rotation = enemyTankInfo.last_info.rot;
+                //enemyTankInfo.obj.transform.position = enemyTankInfo.last_info.pos;
+                //enemyTankInfo.obj.transform.rotation = enemyTankInfo.last_info.rot;
                 Debug.Log("보간안함");
             }
 
