@@ -299,9 +299,9 @@ public class NewbieSceneManager : MonoBehaviour {
 
             Int64 Now = session_.getServerTimestamp();
 
-            Debug.Log("client now: " + Now);
-            Debug.Log("read timestamp: " + read.Timestamp);
-            Debug.Log("diff time: " + protobuf_session.delta_timestamp_);
+            //Debug.Log("client now: " + Now);
+            //Debug.Log("read timestamp: " + read.Timestamp);
+            //Debug.Log("diff time: " + protobuf_session.delta_timestamp_);
 
             enemyTankInfo.last_info.timestamp = read.Timestamp;
             enemyTankInfo.last_info.pos = new Vector3(read.PosX, read.PosY, read.PosZ);
