@@ -150,7 +150,7 @@ public class NewbieSceneManager : MonoBehaviour {
 
             //Debug.Log("Past: " + Past);
 
-            var renderTime = Now - Past - (protobuf_session.ping_time /2)  ;
+            var renderTime = Now - Past;
 
             var t1 = enemyTankInfo.before_last_info.timestamp;
             var t2 = enemyTankInfo.last_info.timestamp;
@@ -177,9 +177,9 @@ public class NewbieSceneManager : MonoBehaviour {
             }
             else
             {
-                //enemyTankInfo.obj.transform.position = enemyTankInfo.last_info.pos;
-                //enemyTankInfo.obj.transform.rotation = enemyTankInfo.last_info.rot;
-                Debug.Log("보간안함");
+                enemyTankInfo.obj.transform.position = enemyTankInfo.last_info.pos;
+                enemyTankInfo.obj.transform.rotation = enemyTankInfo.last_info.rot;
+                //Debug.Log("보간안함");
             }
 
         }
