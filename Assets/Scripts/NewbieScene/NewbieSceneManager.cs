@@ -110,7 +110,7 @@ public class NewbieSceneManager : MonoBehaviour {
         session_.process_packet();
 
         // 주인공 업데이트
-        if (interval_ > 200.0f)
+        if (interval_ >= 100.0f)
         {
             Send_MOVE_OBJECT();
             interval_ = 0.0f;
@@ -140,6 +140,7 @@ public class NewbieSceneManager : MonoBehaviour {
 
     void UpdateEnemiesTank(float delta)
     {
+        Debug.Log(delta);
         foreach (var enemy_info in enemies)
         {
             var enemyTankInfo = enemy_info.Value;
@@ -147,10 +148,10 @@ public class NewbieSceneManager : MonoBehaviour {
             Int64 Now = session_.getServerTimestamp();
 
             var Past = enemyTankInfo.last_info.timestamp - enemyTankInfo.before_last_info.timestamp;
+          
+          //Debug.Log("Past: " + Past);
 
-            //Debug.Log("Past: " + Past);
-
-            var renderTime = Now - Past;
+              var renderTime = Now - Past;
 
             var t1 = enemyTankInfo.before_last_info.timestamp;
             var t2 = enemyTankInfo.last_info.timestamp;
@@ -177,8 +178,8 @@ public class NewbieSceneManager : MonoBehaviour {
             }
             else
             {
-                enemyTankInfo.obj.transform.position = enemyTankInfo.last_info.pos;
-                enemyTankInfo.obj.transform.rotation = enemyTankInfo.last_info.rot;
+                //enemyTankInfo.obj.transform.position = enemyTankInfo.last_info.pos;
+                //enemyTankInfo.obj.transform.rotation = enemyTankInfo.last_info.rot;
                 //Debug.Log("보간안함");
             }
 
@@ -297,7 +298,7 @@ public class NewbieSceneManager : MonoBehaviour {
             enemyTankInfo.before_last_info.pos = enemyTankInfo.last_info.pos;
             enemyTankInfo.before_last_info.rot = enemyTankInfo.last_info.rot;
 
-            Int64 Now = session_.getServerTimestamp();
+            //Int64 Now = session_.getServerTimestamp();
 
             //Debug.Log("client now: " + Now);
             //Debug.Log("read timestamp: " + read.Timestamp);
