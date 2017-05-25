@@ -112,7 +112,7 @@ public class NewbieSceneManager : MonoBehaviour {
         session_.process_packet();
 
         // 주인공 업데이트
-        if (interval_ >= 100.0f)
+        if (interval_ >= 250)
         {
             Send_MOVE_OBJECT();
             interval_ = 0.0f;
