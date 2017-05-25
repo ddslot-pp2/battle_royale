@@ -7,7 +7,7 @@ public class Direct_Tank_State : Tank_State {
     {
         level = 1;
         exp = 0;
-        moveSpeed = 10.0f;
+        moveSpeed = 8.0f;
         maxHp = 100;
         hp = 100;
         tankType = 1; ;

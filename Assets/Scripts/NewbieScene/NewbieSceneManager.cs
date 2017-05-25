@@ -107,12 +107,19 @@ public class NewbieSceneManager : MonoBehaviour {
         init();
     }
 
+    void FixedUpdate()
+    {
+        Send_MOVE_OBJECT();
+        //Debug.Log("FixedUpdate time :" + Time.deltaTime);
+    }
+
     void Update()
     {
         session_.process_packet();
 
+        /*
         // 주인공 업데이트
-        if (interval_ >= 250)
+        if (interval_ >= 200)
         {
             Send_MOVE_OBJECT();
             interval_ = 0.0f;
@@ -122,6 +129,7 @@ public class NewbieSceneManager : MonoBehaviour {
             var delta = Time.deltaTime;
             interval_ = interval_ + (delta * 1000);
         }
+        */
 
         if (ping_interval_ > 1000.0f)
         {
@@ -151,7 +159,8 @@ public class NewbieSceneManager : MonoBehaviour {
 
             var Past = enemyTankInfo.last_info.timestamp - enemyTankInfo.before_last_info.timestamp;
 
-            //Debug.Log("Past: " + Past);
+            //Debug.Log("Past: " + Past);  
+            // 랜더타임 잘못됨
             var renderTime = Now - Past;
 
             var t1 = enemyTankInfo.before_last_info.timestamp;
@@ -160,6 +169,11 @@ public class NewbieSceneManager : MonoBehaviour {
             //Debug.Log("renderTime: " + renderTime);
             //Debug.Log("t1: " + t1);
             //Debug.Log("t2: " + t2);
+
+            Debug.Log("now: " + Now);
+            Debug.Log("render Time: " + renderTime);
+            Debug.Log("t2: " + t2);
+            Debug.Log("t1: " + t1);
 
             bool is_interpolation = true;
             if (renderTime <= t2 && renderTime >= t1 && is_interpolation)
@@ -179,14 +193,17 @@ public class NewbieSceneManager : MonoBehaviour {
                 enemyTankInfo.obj.transform.position = Vector3.Lerp(enemyTankInfo.before_last_info.pos, enemyTankInfo.last_info.pos, ratio);
                 enemyTankInfo.obj.transform.rotation = Quaternion.Slerp(enemyTankInfo.before_last_info.rot, enemyTankInfo.last_info.rot, ratio);
 
-                enemyTankInfo.before_last_info.pos = enemyTankInfo.obj.transform.position;
-                enemyTankInfo.before_last_info.rot = enemyTankInfo.obj.transform.rotation;
-                enemyTankInfo.before_last_info.timestamp = renderTime;
+                //enemyTankInfo.before_last_info.pos = enemyTankInfo.obj.transform.position;
+                //enemyTankInfo.before_last_info.rot = enemyTankInfo.obj.transform.rotation;
+                //enemyTankInfo.before_last_info.timestamp = renderTime;
+                
             }
             else
             {
+                
                 enemyTankInfo.obj.transform.position = enemyTankInfo.last_info.pos;
                 enemyTankInfo.obj.transform.rotation = enemyTankInfo.last_info.rot;
+           
             }
 
         }

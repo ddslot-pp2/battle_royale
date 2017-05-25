@@ -250,7 +250,7 @@ public class protobuf_session : MonoBehaviour
                 {
                     GAME.SC_PING read = GAME.SC_PING.Parser.ParseFrom(proto_buffer);
                     ping_time = getServerTimestamp() - protobuf_session.send_time;
-                    //Debug.Log("ping time: " + ping_time);
+                    Debug.Log("ping time: " + ping_time);
                 }
 
             }
