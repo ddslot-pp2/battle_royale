@@ -31,6 +31,7 @@ public class NewbieSceneManager : MonoBehaviour {
     public Quaternion rot_;
 
     private float ping_interval_;
+    private float update_interval_;
 
     public void OnConnect(bool result)
     {
@@ -102,6 +103,7 @@ public class NewbieSceneManager : MonoBehaviour {
 
         interval_ = 0.0f;
         ping_interval_ = 0.0f;
+        update_interval_ = 0.0f;
         init();
     }
 
@@ -140,7 +142,7 @@ public class NewbieSceneManager : MonoBehaviour {
 
     void UpdateEnemiesTank(float delta)
     {
-        Debug.Log(delta);
+        //Debug.Log(delta);
         foreach (var enemy_info in enemies)
         {
             var enemyTankInfo = enemy_info.Value;
@@ -148,10 +150,9 @@ public class NewbieSceneManager : MonoBehaviour {
             Int64 Now = session_.getServerTimestamp();
 
             var Past = enemyTankInfo.last_info.timestamp - enemyTankInfo.before_last_info.timestamp;
-          
-          //Debug.Log("Past: " + Past);
 
-              var renderTime = Now - Past;
+            //Debug.Log("Past: " + Past);
+            var renderTime = Now - Past;
 
             var t1 = enemyTankInfo.before_last_info.timestamp;
             var t2 = enemyTankInfo.last_info.timestamp;
@@ -173,14 +174,19 @@ public class NewbieSceneManager : MonoBehaviour {
                 // 보간량을 측정하는 방법
                 var ratio = (float)portion / (float)total;
 
+                //Debug.Log("ratio: " + ratio);
+
                 enemyTankInfo.obj.transform.position = Vector3.Lerp(enemyTankInfo.before_last_info.pos, enemyTankInfo.last_info.pos, ratio);
                 enemyTankInfo.obj.transform.rotation = Quaternion.Slerp(enemyTankInfo.before_last_info.rot, enemyTankInfo.last_info.rot, ratio);
+
+                enemyTankInfo.before_last_info.pos = enemyTankInfo.obj.transform.position;
+                enemyTankInfo.before_last_info.rot = enemyTankInfo.obj.transform.rotation;
+                enemyTankInfo.before_last_info.timestamp = renderTime;
             }
             else
             {
-                //enemyTankInfo.obj.transform.position = enemyTankInfo.last_info.pos;
-                //enemyTankInfo.obj.transform.rotation = enemyTankInfo.last_info.rot;
-                //Debug.Log("보간안함");
+                enemyTankInfo.obj.transform.position = enemyTankInfo.last_info.pos;
+                enemyTankInfo.obj.transform.rotation = enemyTankInfo.last_info.rot;
             }
 
         }
@@ -287,7 +293,7 @@ public class NewbieSceneManager : MonoBehaviour {
         var rot = new Quaternion(read.RotX, read.RotY, read.RotZ, read.RotW);
         Int64 timestamp = read.Timestamp;
 
-        Debug.Log("SC_NOT_MOVE_OBJECT");
+        Debug.Log("SC_NOTI_MOVE_OBJECT");
         Debug.Log("x: " + pos.x + "y: " +  pos.y + "z: " + pos.z);
         Debug.Log(timestamp);
 
@@ -295,18 +301,27 @@ public class NewbieSceneManager : MonoBehaviour {
         if (enemyTankInfo != null)
         {
             enemyTankInfo.before_last_info.timestamp = enemyTankInfo.last_info.timestamp;
+            //Debug.Log("before_last_info.timestamp : " + enemyTankInfo.before_last_info.timestamp);
             enemyTankInfo.before_last_info.pos = enemyTankInfo.last_info.pos;
             enemyTankInfo.before_last_info.rot = enemyTankInfo.last_info.rot;
 
-            //Int64 Now = session_.getServerTimestamp();
+            Int64 Now = session_.getServerTimestamp();
 
             //Debug.Log("client now: " + Now);
             //Debug.Log("read timestamp: " + read.Timestamp);
             //Debug.Log("diff time: " + protobuf_session.delta_timestamp_);
 
-            enemyTankInfo.last_info.timestamp = read.Timestamp;
+            //enemyTankInfo.last_info.timestamp = read.Timestamp;
+            enemyTankInfo.last_info.timestamp = Now;
             enemyTankInfo.last_info.pos = new Vector3(read.PosX, read.PosY, read.PosZ);
             enemyTankInfo.last_info.rot = new Quaternion(read.RotX, read.RotY, read.RotZ, read.RotW);
+
+            if (enemyTankInfo.before_last_info.timestamp == enemyTankInfo.last_info.timestamp)
+            {
+                Debug.Log("@@@@@@@@@@@@@@@@@@@@@@@@");
+                Debug.Log("before_last_info.timestamp : " + enemyTankInfo.before_last_info.timestamp);
+    
+            }
         }
 
         /*
