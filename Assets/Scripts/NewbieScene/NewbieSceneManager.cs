@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using network;
 using System;
+using UnityEngine.UI;
 
 public class NewbieSceneManager : MonoBehaviour {
 
@@ -32,6 +33,8 @@ public class NewbieSceneManager : MonoBehaviour {
 
     private float ping_interval_;
     private float update_interval_;
+
+    public Text ping_text;
 
     public void OnConnect(bool result)
     {
@@ -111,6 +114,23 @@ public class NewbieSceneManager : MonoBehaviour {
     {
         Send_MOVE_OBJECT();
         //Debug.Log("FixedUpdate time :" + Time.deltaTime);
+       
+        if (ping_interval_ > 1000.0f)
+        {
+            ping_text.text = protobuf_session.ping_time.ToString();
+
+            //txt.text = "Score : " + currentscore;
+            Debug.Log("FixedUpdate time :" + Time.deltaTime);
+            protobuf_session.send_time = session_.getServerTimestamp();
+            GAME.CS_PING send = new GAME.CS_PING();
+            send.Timestamp = session_.getServerTimestamp();
+            session_.send_protobuf(opcode.CS_PING, send);
+            ping_interval_ = 0.0f;
+        }
+        else
+        {
+            ping_interval_ = ping_interval_ + (Time.deltaTime * 1000);
+        }
     }
 
     void Update()
@@ -131,18 +151,7 @@ public class NewbieSceneManager : MonoBehaviour {
         }
         */
 
-        if (ping_interval_ > 1000.0f)
-        {
-            protobuf_session.send_time = session_.getServerTimestamp();
-            GAME.CS_PING send = new GAME.CS_PING();
-            send.Timestamp = session_.getServerTimestamp();
-            session_.send_protobuf(opcode.CS_PING, send);
-            ping_interval_ = 0.0f;
-        }
-        else
-        {
-            ping_interval_ = ping_interval_ + (Time.deltaTime * 1000);
-        }
+      
 
         // 나머지 업데이트
         UpdateEnemiesTank(Time.deltaTime);
