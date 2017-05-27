@@ -123,7 +123,7 @@ public class NewbieSceneManager : MonoBehaviour {
         
         //Debug.Log("FixedUpdate time :" + Time.deltaTime);
        
-        if (ping_interval_ > 1)
+        if (ping_interval_ > 0.25)
         {
             ping_text.text = protobuf_session.ping_time.ToString();
 
@@ -173,7 +173,7 @@ public class NewbieSceneManager : MonoBehaviour {
 
             //Debug.Log("Past: " + Past);  
             // 랜더타임 잘못됨
-            var renderTime = (Now - Past);
+            var renderTime = Now - Past;
 
             var t1 = enemyTankInfo.before_last_info.timestamp;
             var t2 = enemyTankInfo.last_info.timestamp;
@@ -208,18 +208,11 @@ public class NewbieSceneManager : MonoBehaviour {
                 Debug.Log("N: " + Now);
                 Debug.Log("R: " + renderTime);
                 Debug.Log("2: " + t2);
-                /*
-                Debug.Log("-----------------------------------");
-                Debug.Log("DT: " + Time.deltaTime);
-                Debug.Log("PING: " + protobuf_session.ping_time);
-                Debug.Log("N: " + Now);
-                Debug.Log("R: " + renderTime);
-                Debug.Log("2: " + t2);
                 Debug.Log("1: " + t1);
-                */
 
                 enemyTankInfo.obj.transform.position = enemyTankInfo.last_info.pos;
                 enemyTankInfo.obj.transform.rotation = enemyTankInfo.last_info.rot;
+              
             }
 
 
