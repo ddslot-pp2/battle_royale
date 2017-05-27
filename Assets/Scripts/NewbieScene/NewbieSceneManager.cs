@@ -112,15 +112,15 @@ public class NewbieSceneManager : MonoBehaviour {
 
     void FixedUpdate()
     {
+        session_.process_packet();
+
         Send_MOVE_OBJECT();
         //Debug.Log("FixedUpdate time :" + Time.deltaTime);
        
-        if (ping_interval_ > 1000.0f)
+        if (ping_interval_ > 1)
         {
             ping_text.text = protobuf_session.ping_time.ToString();
 
-            //txt.text = "Score : " + currentscore;
-            Debug.Log("FixedUpdate time :" + Time.deltaTime);
             protobuf_session.send_time = session_.getServerTimestamp();
             GAME.CS_PING send = new GAME.CS_PING();
             send.Timestamp = session_.getServerTimestamp();
@@ -129,14 +129,16 @@ public class NewbieSceneManager : MonoBehaviour {
         }
         else
         {
-            ping_interval_ = ping_interval_ + (Time.deltaTime * 1000);
+            ping_interval_ = ping_interval_ + Time.deltaTime;
         }
+
+
+        // 나머지 탱크들 업데이트
+        //UpdateEnemiesTank();
     }
 
     void Update()
     {
-        session_.process_packet();
-
         /*
         // 주인공 업데이트
         if (interval_ >= 200)
@@ -151,15 +153,11 @@ public class NewbieSceneManager : MonoBehaviour {
         }
         */
 
-      
-
-        // 나머지 업데이트
-        UpdateEnemiesTank(Time.deltaTime);
+        UpdateEnemiesTank();
     }
 
-    void UpdateEnemiesTank(float delta)
+    void UpdateEnemiesTank()
     {
-        //Debug.Log(delta);
         foreach (var enemy_info in enemies)
         {
             var enemyTankInfo = enemy_info.Value;
@@ -174,10 +172,6 @@ public class NewbieSceneManager : MonoBehaviour {
 
             var t1 = enemyTankInfo.before_last_info.timestamp;
             var t2 = enemyTankInfo.last_info.timestamp;
-
-            //Debug.Log("renderTime: " + renderTime);
-            //Debug.Log("t1: " + t1);
-            //Debug.Log("t2: " + t2);
 
             Debug.Log("now: " + Now);
             Debug.Log("render Time: " + renderTime);
@@ -202,10 +196,6 @@ public class NewbieSceneManager : MonoBehaviour {
                 enemyTankInfo.obj.transform.position = Vector3.Lerp(enemyTankInfo.before_last_info.pos, enemyTankInfo.last_info.pos, ratio);
                 enemyTankInfo.obj.transform.rotation = Quaternion.Slerp(enemyTankInfo.before_last_info.rot, enemyTankInfo.last_info.rot, ratio);
 
-                //enemyTankInfo.before_last_info.pos = enemyTankInfo.obj.transform.position;
-                //enemyTankInfo.before_last_info.rot = enemyTankInfo.obj.transform.rotation;
-                //enemyTankInfo.before_last_info.timestamp = renderTime;
-                
             }
             else
             {
