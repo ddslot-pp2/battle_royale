@@ -112,7 +112,15 @@ public class NewbieSceneManager : MonoBehaviour {
 
     void FixedUpdate()
     {
-        Send_MOVE_OBJECT();
+        //Debug.Log("FIXED DELTA: " + Time.deltaTime);
+        session_.process_packet();
+
+        if (update_interval_ >= 0.25)
+        {
+            Send_MOVE_OBJECT();
+            update_interval_ = 0.0f;
+        }
+        
         //Debug.Log("FixedUpdate time :" + Time.deltaTime);
        
         if (ping_interval_ > 1)
@@ -125,16 +133,17 @@ public class NewbieSceneManager : MonoBehaviour {
             session_.send_protobuf(opcode.CS_PING, send);
             ping_interval_ = 0.0f;
         }
-        else
-        {
-            ping_interval_ = ping_interval_ + Time.deltaTime;
-        }
+
+        ping_interval_   = ping_interval_   + Time.deltaTime;
+        update_interval_ = update_interval_ + Time.deltaTime;
+
+
+        //UpdateEnemiesTank();
     }
 
     void Update()
     {
-        session_.process_packet();
-
+        UpdateEnemiesTank();
         /*
         // 주인공 업데이트
         if (interval_ >= 200)
@@ -149,7 +158,7 @@ public class NewbieSceneManager : MonoBehaviour {
         }
         */
 
-        UpdateEnemiesTank();
+        //
     }
 
     void UpdateEnemiesTank()
@@ -164,7 +173,7 @@ public class NewbieSceneManager : MonoBehaviour {
 
             //Debug.Log("Past: " + Past);  
             // 랜더타임 잘못됨
-            var renderTime = Now - Past;
+            var renderTime = (Now - Past);
 
             var t1 = enemyTankInfo.before_last_info.timestamp;
             var t2 = enemyTankInfo.last_info.timestamp;
@@ -195,12 +204,19 @@ public class NewbieSceneManager : MonoBehaviour {
             }
             else
             {
+                Debug.Log("------------ LAG -----------");
+                Debug.Log("N: " + Now);
+                Debug.Log("R: " + renderTime);
+                Debug.Log("2: " + t2);
+                /*
                 Debug.Log("-----------------------------------");
-                Debug.Log("DELTA: " + (t2 - t1).ToString());
+                Debug.Log("DT: " + Time.deltaTime);
+                Debug.Log("PING: " + protobuf_session.ping_time);
                 Debug.Log("N: " + Now);
                 Debug.Log("R: " + renderTime);
                 Debug.Log("2: " + t2);
                 Debug.Log("1: " + t1);
+                */
 
                 enemyTankInfo.obj.transform.position = enemyTankInfo.last_info.pos;
                 enemyTankInfo.obj.transform.rotation = enemyTankInfo.last_info.rot;
