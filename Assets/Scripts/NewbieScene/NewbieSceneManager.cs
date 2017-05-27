@@ -173,10 +173,12 @@ public class NewbieSceneManager : MonoBehaviour {
             var t1 = enemyTankInfo.before_last_info.timestamp;
             var t2 = enemyTankInfo.last_info.timestamp;
 
+            /*
             Debug.Log("now: " + Now);
             Debug.Log("render Time: " + renderTime);
             Debug.Log("t2: " + t2);
             Debug.Log("t1: " + t1);
+            */
 
             bool is_interpolation = true;
             if (renderTime <= t2 && renderTime >= t1 && is_interpolation)
@@ -309,9 +311,9 @@ public class NewbieSceneManager : MonoBehaviour {
         var rot = new Quaternion(read.RotX, read.RotY, read.RotZ, read.RotW);
         Int64 timestamp = read.Timestamp;
 
-        Debug.Log("SC_NOTI_MOVE_OBJECT");
-        Debug.Log("x: " + pos.x + "y: " +  pos.y + "z: " + pos.z);
-        Debug.Log(timestamp);
+        //Debug.Log("SC_NOTI_MOVE_OBJECT");
+        //Debug.Log("x: " + pos.x + "y: " +  pos.y + "z: " + pos.z);
+        //Debug.Log(timestamp);
 
         var enemyTankInfo = enemies[key];
         if (enemyTankInfo != null)
