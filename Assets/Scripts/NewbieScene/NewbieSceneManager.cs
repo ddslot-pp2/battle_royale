@@ -112,8 +112,6 @@ public class NewbieSceneManager : MonoBehaviour {
 
     void FixedUpdate()
     {
-        session_.process_packet();
-
         Send_MOVE_OBJECT();
         //Debug.Log("FixedUpdate time :" + Time.deltaTime);
        
@@ -131,14 +129,12 @@ public class NewbieSceneManager : MonoBehaviour {
         {
             ping_interval_ = ping_interval_ + Time.deltaTime;
         }
-
-
-        // 나머지 탱크들 업데이트
-        //UpdateEnemiesTank();
     }
 
     void Update()
     {
+        session_.process_packet();
+
         /*
         // 주인공 업데이트
         if (interval_ >= 200)
