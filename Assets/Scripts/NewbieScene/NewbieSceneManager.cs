@@ -35,8 +35,10 @@ public class NewbieSceneManager : MonoBehaviour {
     private float update_interval_;
 
     public Text ping_text;
+    public Text interpolation_text;
 
 
+    bool is_interpolation = true;
 
     public void OnConnect(bool result)
     {
@@ -91,6 +93,22 @@ public class NewbieSceneManager : MonoBehaviour {
         EnterField();
     }
 
+    public void HandleInterpolationClick()
+    {
+        if (is_interpolation)
+        {
+            is_interpolation = false;
+            interpolation_text.text = "보간 OFF";
+            Debug.Log("보간 OFF");
+        }
+        else
+        {
+            is_interpolation = true;
+            interpolation_text.text = "보간 ON";
+            Debug.Log("보간 ON");
+        }
+    }
+
     void Start()
     {
         enemies = new Dictionary<Int64, EnemyTankInfo>();
@@ -109,15 +127,24 @@ public class NewbieSceneManager : MonoBehaviour {
         interval_ = 0.0f;
         ping_interval_ = 0.0f;
         update_interval_ = 0.0f;
+
+        if (is_interpolation)
+        {
+            interpolation_text.text = "보간 ON";
+        }
+        else
+        {
+            interpolation_text.text = "보간 OFF";
+        }
+
         init();
     }
 
     void FixedUpdate()
     {
         //Debug.Log("FIXED DELTA: " + Time.deltaTime);
-        session_.process_packet();
-
-        if (update_interval_ >= 0.10)
+       
+        if (update_interval_ >= 0.5)
         {
             Send_MOVE_OBJECT();
             update_interval_ = 0.0f;
@@ -125,7 +152,7 @@ public class NewbieSceneManager : MonoBehaviour {
         
         //Debug.Log("FixedUpdate time :" + Time.deltaTime);
        
-        if (ping_interval_ > 0.25)
+        if (ping_interval_ > 1)
         {
             ping_text.text = protobuf_session.ping_time.ToString();
 
@@ -139,12 +166,13 @@ public class NewbieSceneManager : MonoBehaviour {
         ping_interval_   = ping_interval_   + Time.fixedDeltaTime;
         update_interval_ = update_interval_ + Time.fixedDeltaTime;
 
-        UpdateEnemiesTank();
-        //UpdateEnemiesTank();
+       
     }
 
     void Update()
     {
+        session_.process_packet();
+
         //UpdateEnemiesTank();
         /*
         // 주인공 업데이트
@@ -161,6 +189,7 @@ public class NewbieSceneManager : MonoBehaviour {
         */
 
         //
+        UpdateEnemiesTank();
     }
 
     void UpdateEnemiesTank()
@@ -188,7 +217,7 @@ public class NewbieSceneManager : MonoBehaviour {
             Debug.Log("t1: " + t1);
             */
 
-            bool is_interpolation = true;
+            //bool is_interpolation = true;
             if (renderTime <= t2 && renderTime >= t1 && is_interpolation)
             {
                 
@@ -205,6 +234,15 @@ public class NewbieSceneManager : MonoBehaviour {
 
                 enemyTankInfo.obj.transform.position = Vector3.Lerp(enemyTankInfo.before_last_info.pos, enemyTankInfo.last_info.pos, ratio);
                 enemyTankInfo.obj.transform.rotation = Quaternion.Slerp(enemyTankInfo.before_last_info.rot, enemyTankInfo.last_info.rot, ratio);
+
+                //var position = Vector3.Lerp(enemyTankInfo.before_last_info.pos, enemyTankInfo.last_info.pos, ratio);
+                //var rotation = Quaternion.Slerp(enemyTankInfo.before_last_info.rot, enemyTankInfo.last_info.rot, ratio);
+
+                Debug.Log("------------------------------------------");
+                Debug.Log("t2 - t1: " + total);
+                Debug.Log("portion: " + portion);
+                Debug.Log("ratio: " + ratio);
+
             }
             else
             {
@@ -218,6 +256,7 @@ public class NewbieSceneManager : MonoBehaviour {
               
             }
 
+            Debug.Log("x: " + enemyTankInfo.obj.transform.position.x + "z: " + enemyTankInfo.obj.transform.position.z);
         }    
     }
 
@@ -330,7 +369,7 @@ public class NewbieSceneManager : MonoBehaviour {
         {
             Int64 Now = session_.getServerTimestamp();
 
-            enemyTankInfo.before_last_info.timestamp = Now - 100;
+            enemyTankInfo.before_last_info.timestamp = enemyTankInfo.last_info.timestamp;
             enemyTankInfo.before_last_info.pos = enemyTankInfo.last_info.pos;
             enemyTankInfo.before_last_info.rot = enemyTankInfo.last_info.rot;
 
