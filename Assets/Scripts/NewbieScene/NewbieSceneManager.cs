@@ -144,7 +144,7 @@ public class NewbieSceneManager : MonoBehaviour {
     {
         //Debug.Log("FIXED DELTA: " + Time.deltaTime);
        
-        if (update_interval_ >= 0.5)
+        if (update_interval_ >= 0.1f)
         {
             Send_MOVE_OBJECT();
             update_interval_ = 0.0f;
@@ -154,7 +154,7 @@ public class NewbieSceneManager : MonoBehaviour {
        
         if (ping_interval_ > 1)
         {
-            ping_text.text = protobuf_session.ping_time.ToString();
+            //ping_text.text = protobuf_session.ping_time.ToString();
 
             protobuf_session.send_time = session_.getServerTimestamp();
             GAME.CS_PING send = new GAME.CS_PING();
@@ -194,6 +194,8 @@ public class NewbieSceneManager : MonoBehaviour {
 
     void UpdateEnemiesTank()
     {
+        ping_text.text = Time.deltaTime.ToString();
+
         foreach (var enemy_info in enemies)
         {
             var enemyTankInfo = enemy_info.Value;
