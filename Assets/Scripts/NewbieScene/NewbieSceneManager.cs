@@ -36,6 +36,8 @@ public class NewbieSceneManager : MonoBehaviour {
 
     public Text ping_text;
 
+
+
     public void OnConnect(bool result)
     {
         if (result)
@@ -188,6 +190,7 @@ public class NewbieSceneManager : MonoBehaviour {
             bool is_interpolation = true;
             if (renderTime <= t2 && renderTime >= t1 && is_interpolation)
             {
+                
                 // 서버에서 패킷이 올때까지 걸린시간
                 var total = t2 - t1;
 
@@ -204,17 +207,15 @@ public class NewbieSceneManager : MonoBehaviour {
             }
             else
             {
-                Debug.Log("------------ LAG -----------");
                 Debug.Log("N: " + Now);
                 Debug.Log("R: " + renderTime);
-                Debug.Log("2: " + t2);
-                Debug.Log("1: " + t1);
+                Debug.Log("2 : " + t2);
+                Debug.Log("1 : " + t1);
 
                 enemyTankInfo.obj.transform.position = enemyTankInfo.last_info.pos;
                 enemyTankInfo.obj.transform.rotation = enemyTankInfo.last_info.rot;
               
             }
-
 
         }    
     }
@@ -326,18 +327,16 @@ public class NewbieSceneManager : MonoBehaviour {
         var enemyTankInfo = enemies[key];
         if (enemyTankInfo != null)
         {
-            enemyTankInfo.before_last_info.timestamp = enemyTankInfo.last_info.timestamp;
-            //Debug.Log("before_last_info.timestamp : " + enemyTankInfo.before_last_info.timestamp);
+            Int64 Now = session_.getServerTimestamp();
+            enemyTankInfo.before_last_info.timestamp = Now - 300;
             enemyTankInfo.before_last_info.pos = enemyTankInfo.last_info.pos;
             enemyTankInfo.before_last_info.rot = enemyTankInfo.last_info.rot;
-
-            Int64 Now = session_.getServerTimestamp();
 
             //Debug.Log("client now: " + Now);
             //Debug.Log("read timestamp: " + read.Timestamp);
             //Debug.Log("diff time: " + protobuf_session.delta_timestamp_);
 
-            enemyTankInfo.last_info.timestamp = read.Timestamp;
+            enemyTankInfo.last_info.timestamp = Now;
             enemyTankInfo.last_info.pos = new Vector3(read.PosX, read.PosY, read.PosZ);
             enemyTankInfo.last_info.rot = new Quaternion(read.RotX, read.RotY, read.RotZ, read.RotW);
 
