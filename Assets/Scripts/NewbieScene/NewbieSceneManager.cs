@@ -117,7 +117,7 @@ public class NewbieSceneManager : MonoBehaviour {
         //Debug.Log("FIXED DELTA: " + Time.deltaTime);
         session_.process_packet();
 
-        if (update_interval_ >= 0.25)
+        if (update_interval_ >= 0.10)
         {
             Send_MOVE_OBJECT();
             update_interval_ = 0.0f;
@@ -328,7 +328,8 @@ public class NewbieSceneManager : MonoBehaviour {
         if (enemyTankInfo != null)
         {
             Int64 Now = session_.getServerTimestamp();
-            enemyTankInfo.before_last_info.timestamp = enemyTankInfo.last_info.timestamp;
+
+            enemyTankInfo.before_last_info.timestamp = Now - 275;
             enemyTankInfo.before_last_info.pos = enemyTankInfo.last_info.pos;
             enemyTankInfo.before_last_info.rot = enemyTankInfo.last_info.rot;
 
