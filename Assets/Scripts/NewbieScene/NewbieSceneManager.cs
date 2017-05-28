@@ -175,7 +175,7 @@ public class NewbieSceneManager : MonoBehaviour {
 
             //Debug.Log("Past: " + Past);  
             // 랜더타임 잘못됨
-            Debug.Log(Time.deltaTime);
+            //Debug.Log(Time.deltaTime);
             var renderTime = Now - Past;
 
             var t1 = enemyTankInfo.before_last_info.timestamp;
