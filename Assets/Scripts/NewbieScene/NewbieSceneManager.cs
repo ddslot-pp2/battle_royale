@@ -329,7 +329,7 @@ public class NewbieSceneManager : MonoBehaviour {
         {
             Int64 Now = session_.getServerTimestamp();
 
-            enemyTankInfo.before_last_info.timestamp = Now - 275;
+            enemyTankInfo.before_last_info.timestamp = Now - 100;
             enemyTankInfo.before_last_info.pos = enemyTankInfo.last_info.pos;
             enemyTankInfo.before_last_info.rot = enemyTankInfo.last_info.rot;
 
