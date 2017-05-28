@@ -136,16 +136,16 @@ public class NewbieSceneManager : MonoBehaviour {
             ping_interval_ = 0.0f;
         }
 
-        ping_interval_   = ping_interval_   + Time.deltaTime;
-        update_interval_ = update_interval_ + Time.deltaTime;
+        ping_interval_   = ping_interval_   + Time.fixedDeltaTime;
+        update_interval_ = update_interval_ + Time.fixedDeltaTime;
 
-
+        UpdateEnemiesTank();
         //UpdateEnemiesTank();
     }
 
     void Update()
     {
-        UpdateEnemiesTank();
+        //UpdateEnemiesTank();
         /*
         // 주인공 업데이트
         if (interval_ >= 200)
@@ -175,6 +175,7 @@ public class NewbieSceneManager : MonoBehaviour {
 
             //Debug.Log("Past: " + Past);  
             // 랜더타임 잘못됨
+            Debug.Log(Time.deltaTime);
             var renderTime = Now - Past;
 
             var t1 = enemyTankInfo.before_last_info.timestamp;
