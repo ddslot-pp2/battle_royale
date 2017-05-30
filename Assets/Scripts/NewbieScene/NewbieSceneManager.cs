@@ -148,10 +148,8 @@ public class NewbieSceneManager : MonoBehaviour {
 
         //Debug.Log("FixedUpdate time :" + Time.deltaTime);
 
-        if (ping_interval_ > 1.0f)
+        if (ping_interval_ >= 1.0f)
         {
-            ping_text.text = protobuf_session.ping_time.ToString();
-
             protobuf_session.send_time = session_.getServerTimestamp();
             GAME.CS_PING send = new GAME.CS_PING();
             send.Timestamp = session_.getServerTimestamp();
@@ -183,8 +181,10 @@ public class NewbieSceneManager : MonoBehaviour {
         */
 
         //
-        delta_text.text = Time.deltaTime.ToString();
         UpdateEnemiesTank();
+
+        ping_text.text = protobuf_session.ping_time.ToString();
+        delta_text.text = Time.deltaTime.ToString();
     }
 
     void UpdateEnemiesTank()
@@ -229,7 +229,7 @@ public class NewbieSceneManager : MonoBehaviour {
                 // 보간량을 측정하는 방법
                 var ratio = (float)portion / (float)total;
 
-                //Debug.Log("ratio: " + ratio);
+                Debug.Log("ratio: " + ratio);
 
                 enemyTankInfo.obj.transform.position = Vector3.Lerp(enemyTankInfo.before_last_info.pos, enemyTankInfo.last_info.pos, ratio);
                 enemyTankInfo.obj.transform.rotation = Quaternion.Slerp(enemyTankInfo.before_last_info.rot, enemyTankInfo.last_info.rot, ratio);
