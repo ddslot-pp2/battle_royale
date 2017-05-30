@@ -252,8 +252,8 @@ public class NewbieSceneManager : MonoBehaviour {
                 //Debug.Log("2 : " + t2);
                 //Debug.Log("1 : " + t1);
 
-                //enemyTankInfo.obj.transform.position = enemyTankInfo.last_info.pos;
-                //enemyTankInfo.obj.transform.rotation = enemyTankInfo.last_info.rot;
+                enemyTankInfo.obj.transform.position = enemyTankInfo.last_info.pos;
+                enemyTankInfo.obj.transform.rotation = enemyTankInfo.last_info.rot;
               
             }
 
@@ -372,7 +372,7 @@ public class NewbieSceneManager : MonoBehaviour {
             enemyTankInfo.before_last_info.timestamp = enemyTankInfo.last_info.timestamp;
             enemyTankInfo.before_last_info.pos       = enemyTankInfo.last_info.pos;
             enemyTankInfo.before_last_info.rot       = enemyTankInfo.last_info.rot;
-            enemyTankInfo.before_last_info.latency   = enemyTankInfo.last_info.latency;
+            //enemyTankInfo.before_last_info.latency   = enemyTankInfo.last_info.latency;
 
             //Debug.Log("client now: " + Now);
             //Debug.Log("read timestamp: " + read.Timestamp);
