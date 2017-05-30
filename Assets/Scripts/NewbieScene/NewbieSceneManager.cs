@@ -37,6 +37,7 @@ public class NewbieSceneManager : MonoBehaviour {
 
     public Text ping_text;
     public Text interpolation_text;
+    public Text delta_text;
 
 
     bool is_interpolation = true;
@@ -149,7 +150,7 @@ public class NewbieSceneManager : MonoBehaviour {
 
         if (ping_interval_ > 1.0f)
         {
-            //ping_text.text = protobuf_session.ping_time.ToString();
+            ping_text.text = protobuf_session.ping_time.ToString();
 
             protobuf_session.send_time = session_.getServerTimestamp();
             GAME.CS_PING send = new GAME.CS_PING();
@@ -160,8 +161,6 @@ public class NewbieSceneManager : MonoBehaviour {
 
         ping_interval_   = ping_interval_   + Time.fixedDeltaTime;
         update_interval_ = update_interval_ + Time.fixedDeltaTime;
-
-       
     }
 
     void Update()
@@ -184,13 +183,13 @@ public class NewbieSceneManager : MonoBehaviour {
         */
 
         //
-        ping_text.text = Time.deltaTime.ToString();
+        delta_text.text = Time.deltaTime.ToString();
         UpdateEnemiesTank();
     }
 
     void UpdateEnemiesTank()
     {
-        ping_text.text = Time.deltaTime.ToString();
+        //ping_text.text = Time.deltaTime.ToString();
 
         foreach (var enemy_info in enemies)
         {
@@ -372,7 +371,7 @@ public class NewbieSceneManager : MonoBehaviour {
             enemyTankInfo.before_last_info.timestamp = enemyTankInfo.last_info.timestamp;
             enemyTankInfo.before_last_info.pos       = enemyTankInfo.last_info.pos;
             enemyTankInfo.before_last_info.rot       = enemyTankInfo.last_info.rot;
-            //enemyTankInfo.before_last_info.latency   = enemyTankInfo.last_info.latency;
+            enemyTankInfo.before_last_info.latency   = enemyTankInfo.last_info.latency;
 
             //Debug.Log("client now: " + Now);
             //Debug.Log("read timestamp: " + read.Timestamp);
