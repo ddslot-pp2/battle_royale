@@ -204,6 +204,7 @@ public class NewbieSceneManager : MonoBehaviour {
             // 랜더타임 잘못됨
             //Debug.Log(Time.deltaTime);
             var avg_latency = (enemyTankInfo.last_info.latency + enemyTankInfo.before_last_info.latency) / 2;
+            //Debug.Log("avg_latency" + avg_latency);
             var render_time = Now - Past - avg_latency;
 
             var t1 = enemyTankInfo.before_last_info.timestamp;
@@ -247,12 +248,12 @@ public class NewbieSceneManager : MonoBehaviour {
             {
                 //Debug.Log("fuck u b2");
                 //Debug.Log("N: " + Now);
-                //Debug.Log("R: " + renderTime);
+                //Debug.Log("R: " + render_time);
                 //Debug.Log("2 : " + t2);
                 //Debug.Log("1 : " + t1);
 
-                enemyTankInfo.obj.transform.position = enemyTankInfo.last_info.pos;
-                enemyTankInfo.obj.transform.rotation = enemyTankInfo.last_info.rot;
+                //enemyTankInfo.obj.transform.position = enemyTankInfo.last_info.pos;
+                //enemyTankInfo.obj.transform.rotation = enemyTankInfo.last_info.rot;
               
             }
 
@@ -371,6 +372,7 @@ public class NewbieSceneManager : MonoBehaviour {
             enemyTankInfo.before_last_info.timestamp = enemyTankInfo.last_info.timestamp;
             enemyTankInfo.before_last_info.pos       = enemyTankInfo.last_info.pos;
             enemyTankInfo.before_last_info.rot       = enemyTankInfo.last_info.rot;
+            enemyTankInfo.before_last_info.latency   = enemyTankInfo.last_info.latency;
 
             //Debug.Log("client now: " + Now);
             //Debug.Log("read timestamp: " + read.Timestamp);
@@ -381,6 +383,9 @@ public class NewbieSceneManager : MonoBehaviour {
             enemyTankInfo.last_info.rot = new Quaternion(read.RotX, read.RotY, read.RotZ, read.RotW);
 
             enemyTankInfo.last_info.latency = Now - read.Timestamp;
+
+            //Debug.Log("prev latency:" + enemyTankInfo.before_last_info.latency);
+            //Debug.Log("last latency:" + enemyTankInfo.last_info.latency);
 
             //Debug.Log("Latency: " + enemyTankInfo.last_info.latency);
 
