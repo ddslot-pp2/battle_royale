@@ -143,16 +143,6 @@ public class NewbieSceneManager : MonoBehaviour {
 
     void FixedUpdate()
     {
-        //Debug.Log("FIXED DELTA: " + Time.deltaTime);
-
-        /*
-        if (update_interval_ >= 0.5)
-        {
-            Send_MOVE_OBJECT();
-            update_interval_ = 0.0f;
-        }
-        */
-
         Send_MOVE_OBJECT();
 
         //Debug.Log("FixedUpdate time :" + Time.deltaTime);
@@ -200,6 +190,8 @@ public class NewbieSceneManager : MonoBehaviour {
 
     void UpdateEnemiesTank()
     {
+        ping_text.text = Time.deltaTime.ToString();
+
         foreach (var enemy_info in enemies)
         {
             var enemyTankInfo = enemy_info.Value;
