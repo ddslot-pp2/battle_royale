@@ -222,8 +222,9 @@ public class NewbieSceneManager : MonoBehaviour {
             //Debug.Log("avg_latency" + avg_latency);
             var render_time = now - snapshot_interval - avg_latency;
 
-            //Debug.Log("n: " + now);
-            //Debug.Log("r: " + render_time);
+            Debug.Log("n: " + now);
+            Debug.Log("r: " + render_time);
+            Debug.Log("d: " + (now - render_time));
             //Debug.Log("======================================");
 
 
@@ -238,6 +239,7 @@ public class NewbieSceneManager : MonoBehaviour {
 
             if (render_time < enemyTankInfo.snapshots[1].timestamp)
             {
+                Debug.Log("1 사용");
                 t2 = enemyTankInfo.snapshots[1].timestamp;
                 t1 = enemyTankInfo.snapshots[0].timestamp;
 
@@ -251,9 +253,11 @@ public class NewbieSceneManager : MonoBehaviour {
 
             if (render_time <= t2 && render_time >= t1 && is_interpolation)
             {
-                var total = t2 - t1;
+                var total = (t2 - t1) + avg_latency;
                 var portion = render_time - t1;
                 var ratio = (float)portion / (float)total;
+
+                Debug.Log("ratio: " + ratio);
 
                 enemyTankInfo.obj.transform.position = Vector3.Lerp(pos1, pos2, ratio);
                 enemyTankInfo.obj.transform.rotation = Quaternion.Slerp(rot1, rot2, ratio);
