@@ -11,7 +11,7 @@ public class NewbieSceneManager : MonoBehaviour {
 
     private bool is_loading = true;
 
-    class MoveInfo
+    class snapshot
     {
         public Vector3 pos = new Vector3(0.0f, 0.0f, 0.0f);
         public Quaternion rot = new Quaternion(0.0f, 0.0f, 0.0f, 0.0f);
@@ -22,8 +22,16 @@ public class NewbieSceneManager : MonoBehaviour {
     class EnemyTankInfo
     {
         public GameObject obj;
-        public MoveInfo prev_last_info = new MoveInfo();
-        public MoveInfo last_info = new MoveInfo();
+        public snapshot[] snapshots = null;
+
+        public EnemyTankInfo()
+        {
+            snapshots = new snapshot[3];
+            for (var i = 0; i < max_snapshot_size; ++i)
+            {
+                snapshots[i] = new snapshot();
+            }
+        }
     }
 
     Dictionary<Int64, EnemyTankInfo> enemies = null;
@@ -41,6 +49,8 @@ public class NewbieSceneManager : MonoBehaviour {
 
     Int64 recv_count = 0;
 
+
+    private static int max_snapshot_size = 3;
 
     bool is_interpolation = true;
 
@@ -202,66 +212,91 @@ public class NewbieSceneManager : MonoBehaviour {
 
             Int64 now = session_.getServerTimestamp();
 
-            var snapshot_interval = enemyTankInfo.last_info.timestamp - enemyTankInfo.prev_last_info.timestamp;
+            var snapshot_interval = enemyTankInfo.snapshots[2].timestamp - enemyTankInfo.snapshots[1].timestamp;
 
             //Debug.Log("Past: " + Past);  
             // 랜더타임 잘못됨
             //Debug.Log(Time.deltaTime);
-            var avg_latency = enemyTankInfo.last_info.latency;// / recv_count;
+            var avg_latency = (enemyTankInfo.snapshots[0].latency + enemyTankInfo.snapshots[1].latency + enemyTankInfo.snapshots[2].latency)/3;
 
-            
-            Debug.Log("avg_latency" + avg_latency);
+            //Debug.Log("avg_latency" + avg_latency);
             var render_time = now - snapshot_interval - avg_latency;
 
-            var t1 = enemyTankInfo.prev_last_info.timestamp;
-            var t2 = enemyTankInfo.last_info.timestamp;
+            //Debug.Log("n: " + now);
+            //Debug.Log("r: " + render_time);
+            //Debug.Log("======================================");
 
-            /*
-            Debug.Log("now: " + Now);
-            Debug.Log("render Time: " + renderTime);
-            Debug.Log("t2: " + t2);
-            Debug.Log("t1: " + t1);
-            */
 
-            //bool is_interpolation = true;
+            var t2 = enemyTankInfo.snapshots[2].timestamp;
+            var t1 = enemyTankInfo.snapshots[1].timestamp;
+
+            var pos2 = enemyTankInfo.snapshots[2].pos;
+            var pos1 = enemyTankInfo.snapshots[1].pos;
+
+            var rot2 = enemyTankInfo.snapshots[2].rot;
+            var rot1 = enemyTankInfo.snapshots[1].rot;
+
+            if (render_time < enemyTankInfo.snapshots[1].timestamp)
+            {
+                t2 = enemyTankInfo.snapshots[1].timestamp;
+                t1 = enemyTankInfo.snapshots[0].timestamp;
+
+                pos2 = enemyTankInfo.snapshots[1].pos;
+                pos1 = enemyTankInfo.snapshots[0].pos;
+
+                rot2 = enemyTankInfo.snapshots[1].rot;
+                rot1 = enemyTankInfo.snapshots[0].rot;
+            }
+
+
             if (render_time <= t2 && render_time >= t1 && is_interpolation)
-            {     
-                // 서버에서 패킷이 올때까지 걸린시간
-                var total = t2 - t1 + avg_latency;
-                //Debug.Log("total: " + total);
-
-                // 드로우콜하는 현재 렌더시간이랑 마지막으로 패킷을 받은 시간의 차이
+            {
+                var total = t2 - t1;
                 var portion = render_time - t1;
-
-                // 보간량을 측정하는 방법
                 var ratio = (float)portion / (float)total;
 
-
-                enemyTankInfo.obj.transform.position = Vector3.Lerp(enemyTankInfo.prev_last_info.pos, enemyTankInfo.last_info.pos, ratio);
-                enemyTankInfo.obj.transform.rotation = Quaternion.Slerp(enemyTankInfo.prev_last_info.rot, enemyTankInfo.last_info.rot, ratio);
-
-                //var position = Vector3.Lerp(enemyTankInfo.before_last_info.pos, enemyTankInfo.last_info.pos, ratio);
-                //var rotation = Quaternion.Slerp(enemyTankInfo.before_last_info.rot, enemyTankInfo.last_info.rot, ratio);
-
-                //Debug.Log("------------------------------------------");
-                //Debug.Log("t2 - t1: " + total);
-                //Debug.Log("portion: " + portion);
-                //Debug.Log("ratio: " + ratio);
-
+                enemyTankInfo.obj.transform.position = Vector3.Lerp(pos1, pos2, ratio);
+                enemyTankInfo.obj.transform.rotation = Quaternion.Slerp(rot1, rot2, ratio);
             }
             else
             {
-                Debug.Log("N: " + now);
-                Debug.Log("R: " + render_time);
-                Debug.Log("2 : " + t2);
-                Debug.Log("1 : " + t1);
-
-                enemyTankInfo.obj.transform.position = enemyTankInfo.last_info.pos;
-                enemyTankInfo.obj.transform.rotation = enemyTankInfo.last_info.rot;
-              
+                Debug.Log("no interpolation");
+                enemyTankInfo.obj.transform.position = pos2;
+                enemyTankInfo.obj.transform.rotation = rot2;
             }
+   
+                /*
+                var t1 = enemyTankInfo.prev_last_info.timestamp;
+                var t2 = enemyTankInfo.last_info.timestamp;
 
-        }    
+                if (render_time <= t2 && render_time >= t1 && is_interpolation)
+                {     
+                    // 서버에서 패킷이 올때까지 걸린시간
+                    var total = t2 - t1 + avg_latency;
+                    //Debug.Log("total: " + total);
+
+                    // 드로우콜하는 현재 렌더시간이랑 마지막으로 패킷을 받은 시간의 차이
+                    var portion = render_time - t1;
+
+                    // 보간량을 측정하는 방법
+                    var ratio = (float)portion / (float)total;
+
+                    enemyTankInfo.obj.transform.position = Vector3.Lerp(enemyTankInfo.prev_last_info.pos, enemyTankInfo.last_info.pos, ratio);
+                    enemyTankInfo.obj.transform.rotation = Quaternion.Slerp(enemyTankInfo.prev_last_info.rot, enemyTankInfo.last_info.rot, ratio);
+                }
+                else
+                {
+                    Debug.Log("N: " + now);
+                    Debug.Log("R: " + render_time);
+                    Debug.Log("2 : " + t2);
+                    Debug.Log("1 : " + t1);
+
+                    enemyTankInfo.obj.transform.position = enemyTankInfo.last_info.pos;
+                    enemyTankInfo.obj.transform.rotation = enemyTankInfo.last_info.rot;
+                }
+                */
+
+            }    
     }
 
     void Destroy()
@@ -317,11 +352,12 @@ public class NewbieSceneManager : MonoBehaviour {
             var enemy_tank_info = new EnemyTankInfo();
             enemy_tank_info.obj = enemyTank;
 
-            enemy_tank_info.prev_last_info.timestamp = session_.getServerTimestamp();
-            enemy_tank_info.prev_last_info.pos = pos;
 
-            enemy_tank_info.last_info.timestamp = session_.getServerTimestamp();
-            enemy_tank_info.last_info.pos = pos;
+            for (var i = 0; i < max_snapshot_size; ++i)
+            {
+                enemy_tank_info.snapshots[i].timestamp = session_.getServerTimestamp();
+                enemy_tank_info.snapshots[i].pos = pos;
+            }
 
             enemies[other.Key] = enemy_tank_info;
 
@@ -346,11 +382,11 @@ public class NewbieSceneManager : MonoBehaviour {
 
         enemy_tank_info.obj = enemyTank;
 
-        enemy_tank_info.prev_last_info.timestamp = session_.getServerTimestamp();
-        enemy_tank_info.prev_last_info.pos = pos;
-
-        enemy_tank_info.last_info.timestamp = session_.getServerTimestamp();
-        enemy_tank_info.last_info.pos = pos;
+        for (var i = 0; i < max_snapshot_size; ++i)
+        {
+            enemy_tank_info.snapshots[i].timestamp = session_.getServerTimestamp();
+            enemy_tank_info.snapshots[i].pos = pos;
+        }
 
         enemies[key] = enemy_tank_info;
         Debug.Log("count: " + enemies.Count);
@@ -370,14 +406,26 @@ public class NewbieSceneManager : MonoBehaviour {
         var enemyTankInfo = enemies[key];
         if (enemyTankInfo != null)
         {
+            enemyTankInfo.snapshots[0].timestamp = enemyTankInfo.snapshots[1].timestamp;
+            enemyTankInfo.snapshots[0].pos       = enemyTankInfo.snapshots[1].pos;
+            enemyTankInfo.snapshots[0].rot       = enemyTankInfo.snapshots[1].rot;
+            enemyTankInfo.snapshots[0].latency   = enemyTankInfo.snapshots[1].latency;
+
+            enemyTankInfo.snapshots[1].timestamp = enemyTankInfo.snapshots[2].timestamp;
+            enemyTankInfo.snapshots[1].pos = enemyTankInfo.snapshots[2].pos;
+            enemyTankInfo.snapshots[1].rot = enemyTankInfo.snapshots[2].rot;
+            enemyTankInfo.snapshots[1].latency = enemyTankInfo.snapshots[2].latency;
+
+            enemyTankInfo.snapshots[2].timestamp = read.Timestamp;
+            enemyTankInfo.snapshots[2].pos       = new Vector3(read.PosX, read.PosY, read.PosZ);
+            enemyTankInfo.snapshots[2].rot       = new Quaternion(read.RotX, read.RotY, read.RotZ, read.RotW);
+            enemyTankInfo.snapshots[2].latency   = session_.getServerTimestamp() - read.Timestamp;
+
+            /*
             enemyTankInfo.prev_last_info.timestamp = enemyTankInfo.last_info.timestamp;
             enemyTankInfo.prev_last_info.pos       = enemyTankInfo.last_info.pos;
             enemyTankInfo.prev_last_info.rot       = enemyTankInfo.last_info.rot;
             enemyTankInfo.prev_last_info.latency   = enemyTankInfo.last_info.latency;
-
-            //Debug.Log("client now: " + Now);
-            //Debug.Log("read timestamp: " + read.Timestamp);
-            //Debug.Log("diff time: " + protobuf_session.delta_timestamp_);
 
             enemyTankInfo.last_info.timestamp = read.Timestamp;
             enemyTankInfo.last_info.pos = new Vector3(read.PosX, read.PosY, read.PosZ);
@@ -391,24 +439,13 @@ public class NewbieSceneManager : MonoBehaviour {
                 Debug.Log("@@@@@@@@@@@ 말도안됨 @@@@@@@@@@@");
             }
 
-            //recv_count = recv_count + 1;
-            //Debug.Log("----------------------------------------------------");
-            //Debug.Log(enemyTankInfo.before_last_info.timestamp);
-            //Debug.Log(enemyTankInfo.last_info.timestamp);
-
-
-
-            //Debug.Log("prev latency:" + enemyTankInfo.before_last_info.latency);
-            //Debug.Log("last latency:" + enemyTankInfo.last_info.latency);
-
-            //Debug.Log("Latency: " + enemyTankInfo.last_info.latency);
-
             if (enemyTankInfo.prev_last_info.timestamp == enemyTankInfo.last_info.timestamp)
             {
                 Debug.Log("@@@@@@@@@@@@@@@@@@@@@@@@");
                 Debug.Log("before_last_info.timestamp : " + enemyTankInfo.prev_last_info.timestamp);
     
             }
+            */
         }
 
         /*
