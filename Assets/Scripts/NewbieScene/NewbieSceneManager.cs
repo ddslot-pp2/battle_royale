@@ -222,6 +222,7 @@ public class NewbieSceneManager : MonoBehaviour {
             //Debug.Log("avg_latency" + avg_latency);
             var render_time = now - snapshot_interval - avg_latency;
 
+            Debug.Log("s: " + snapshot_interval);
             Debug.Log("n: " + now);
             Debug.Log("r: " + render_time);
             Debug.Log("d: " + (now - render_time));
