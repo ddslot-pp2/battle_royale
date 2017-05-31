@@ -253,7 +253,7 @@ public class NewbieSceneManager : MonoBehaviour {
 
             if (render_time <= t2 && render_time >= t1 && is_interpolation)
             {
-                var total = t2 - t1;
+                var total = (t2 - t1) + avg_latency;
                 var portion = render_time - t1;
                 var ratio = (float)portion / (float)total;
 
