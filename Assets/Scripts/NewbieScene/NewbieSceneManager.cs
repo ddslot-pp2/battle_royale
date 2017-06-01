@@ -253,11 +253,6 @@ public class NewbieSceneManager : MonoBehaviour {
             var rot1 = enemyTankInfo.snapshots[1].rot;
 
             //Debug.Log("render delta : " + (t2 - t1));
-            Debug.Log("N: " + now);
-            Debug.Log("R: " + render_time);
-            Debug.Log("2: " + t2);
-            Debug.Log("1: " + t1);
-            Debug.Log("-----------------------------------");
 
             if (render_time < enemyTankInfo.snapshots[1].timestamp)
             {
@@ -282,7 +277,12 @@ public class NewbieSceneManager : MonoBehaviour {
                 enemyTankInfo.obj.transform.rotation = Quaternion.Slerp(rot1, rot2, ratio);
             }
             else
-            {               
+            {
+                Debug.Log("N: " + now);
+                Debug.Log("R: " + render_time);
+                Debug.Log("2: " + t2);
+                Debug.Log("1: " + t1);
+                Debug.Log("-----------------------------------");
                 //enemyTankInfo.obj.transform.position = pos2;
                 //enemyTankInfo.obj.transform.rotation = rot2;
             }
