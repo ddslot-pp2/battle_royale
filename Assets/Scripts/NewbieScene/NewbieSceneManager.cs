@@ -283,8 +283,8 @@ public class NewbieSceneManager : MonoBehaviour {
             }
             else
             {               
-                enemyTankInfo.obj.transform.position = pos2;
-                enemyTankInfo.obj.transform.rotation = rot2;
+                //enemyTankInfo.obj.transform.position = pos2;
+                //enemyTankInfo.obj.transform.rotation = rot2;
             }
 
             prev_render_time = render_time;
