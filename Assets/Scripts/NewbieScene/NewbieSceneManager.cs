@@ -257,11 +257,22 @@ public class NewbieSceneManager : MonoBehaviour {
             if (render_time < enemyTankInfo.snapshots[1].timestamp)
             {
                 //t2 = enemyTankInfo.snapshots[1].timestamp;
-                t1 = prev_render_time;
+                if (prev_render_time < render_time)
+                {
+                    t1 = prev_render_time;
+                }
+                else
+                {
+                    t1 = render_time - (Int64)Time.deltaTime;
+                }
 
                 //pos2 = enemyTankInfo.snapshots[1].pos;
                 pos1 = enemyTankInfo.obj.transform.position;
                 rot1 = enemyTankInfo.obj.transform.rotation;
+            }
+            else if (render_time > enemyTankInfo.snapshots[2].timestamp)
+            {
+                render_time = enemyTankInfo.snapshots[2].timestamp;
             }
             
 
@@ -283,8 +294,8 @@ public class NewbieSceneManager : MonoBehaviour {
                 Debug.Log("2: " + t2);
                 Debug.Log("1: " + t1);
                 Debug.Log("-----------------------------------");
-                //enemyTankInfo.obj.transform.position = pos2;
-                //enemyTankInfo.obj.transform.rotation = rot2;
+                enemyTankInfo.obj.transform.position = pos2;
+                enemyTankInfo.obj.transform.rotation = rot2;
             }
 
             prev_render_time = render_time;
