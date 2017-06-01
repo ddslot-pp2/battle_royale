@@ -52,6 +52,8 @@ public class NewbieSceneManager : MonoBehaviour {
     public Int64 sum_latency = 0;
     public Int64 recv_latency_count = 0;
 
+    public Int64 prev_render_time = 0;
+
     private static int max_snapshot_size = 3;
 
     bool is_interpolation = true;
@@ -242,13 +244,13 @@ public class NewbieSceneManager : MonoBehaviour {
 
 
             var t2 = enemyTankInfo.snapshots[2].timestamp;
-            var t1 = enemyTankInfo.snapshots[0].timestamp;
+            var t1 = enemyTankInfo.snapshots[1].timestamp;
 
             var pos2 = enemyTankInfo.snapshots[2].pos;
-            var pos1 = enemyTankInfo.snapshots[0].pos;
+            var pos1 = enemyTankInfo.snapshots[1].pos;
 
             var rot2 = enemyTankInfo.snapshots[2].rot;
-            var rot1 = enemyTankInfo.snapshots[0].rot;
+            var rot1 = enemyTankInfo.snapshots[1].rot;
 
             //Debug.Log("render delta : " + (t2 - t1));
             Debug.Log("N: " + now);
@@ -257,21 +259,15 @@ public class NewbieSceneManager : MonoBehaviour {
             Debug.Log("1: " + t1);
             Debug.Log("-----------------------------------");
 
-
-            
-            /*
             if (render_time < enemyTankInfo.snapshots[1].timestamp)
             {
                 //t2 = enemyTankInfo.snapshots[1].timestamp;
-                t1 = enemyTankInfo.snapshots[0].timestamp;
+                t1 = prev_render_time;
 
                 //pos2 = enemyTankInfo.snapshots[1].pos;
-                pos1 = enemyTankInfo.snapshots[0].pos;
-
-                rot2 = enemyTankInfo.snapshots[1].rot;
-                rot1 = enemyTankInfo.snapshots[0].rot;
+                pos1 = enemyTankInfo.obj.transform.position;
+                rot1 = enemyTankInfo.obj.transform.rotation;
             }
-            */
             
 
             if (render_time <= t2 && render_time >= t1 && is_interpolation)
@@ -290,7 +286,8 @@ public class NewbieSceneManager : MonoBehaviour {
                 enemyTankInfo.obj.transform.position = pos2;
                 enemyTankInfo.obj.transform.rotation = rot2;
             }
-   
+
+            prev_render_time = render_time;
                 /*
                 var t1 = enemyTankInfo.prev_last_info.timestamp;
                 var t2 = enemyTankInfo.last_info.timestamp;
