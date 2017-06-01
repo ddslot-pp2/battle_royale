@@ -242,13 +242,13 @@ public class NewbieSceneManager : MonoBehaviour {
 
 
             var t2 = enemyTankInfo.snapshots[2].timestamp;
-            var t1 = enemyTankInfo.snapshots[1].timestamp;
+            var t1 = enemyTankInfo.snapshots[0].timestamp;
 
             var pos2 = enemyTankInfo.snapshots[2].pos;
-            var pos1 = enemyTankInfo.snapshots[1].pos;
+            var pos1 = enemyTankInfo.snapshots[0].pos;
 
             var rot2 = enemyTankInfo.snapshots[2].rot;
-            var rot1 = enemyTankInfo.snapshots[1].rot;
+            var rot1 = enemyTankInfo.snapshots[0].rot;
 
             //Debug.Log("render delta : " + (t2 - t1));
             Debug.Log("N: " + now);
@@ -259,6 +259,7 @@ public class NewbieSceneManager : MonoBehaviour {
 
 
             
+            /*
             if (render_time < enemyTankInfo.snapshots[1].timestamp)
             {
                 //t2 = enemyTankInfo.snapshots[1].timestamp;
@@ -270,6 +271,7 @@ public class NewbieSceneManager : MonoBehaviour {
                 rot2 = enemyTankInfo.snapshots[1].rot;
                 rot1 = enemyTankInfo.snapshots[0].rot;
             }
+            */
             
 
             if (render_time <= t2 && render_time >= t1 && is_interpolation)
