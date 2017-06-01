@@ -261,10 +261,10 @@ public class NewbieSceneManager : MonoBehaviour {
             
             if (render_time < enemyTankInfo.snapshots[1].timestamp)
             {
-                t2 = enemyTankInfo.snapshots[1].timestamp;
+                //t2 = enemyTankInfo.snapshots[1].timestamp;
                 t1 = enemyTankInfo.snapshots[0].timestamp;
 
-                pos2 = enemyTankInfo.snapshots[1].pos;
+                //pos2 = enemyTankInfo.snapshots[1].pos;
                 pos1 = enemyTankInfo.snapshots[0].pos;
 
                 rot2 = enemyTankInfo.snapshots[1].rot;
