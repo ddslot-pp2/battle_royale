@@ -263,8 +263,14 @@ public class NewbieSceneManager : MonoBehaviour {
                 }
                 else
                 {
+                    render_time = prev_render_time;
+                }
+                /*
+                else
+                {
                     t1 = render_time - (Int64)Time.deltaTime;
                 }
+                */
 
                 //pos2 = enemyTankInfo.snapshots[1].pos;
                 pos1 = enemyTankInfo.obj.transform.position;
