@@ -294,8 +294,8 @@ public class NewbieSceneManager : MonoBehaviour {
                 Debug.Log("2: " + t2);
                 Debug.Log("1: " + t1);
                 Debug.Log("-----------------------------------");
-                enemyTankInfo.obj.transform.position = pos2;
-                enemyTankInfo.obj.transform.rotation = rot2;
+                //enemyTankInfo.obj.transform.position = pos2;
+                //enemyTankInfo.obj.transform.rotation = rot2;
             }
 
             prev_render_time = render_time;
