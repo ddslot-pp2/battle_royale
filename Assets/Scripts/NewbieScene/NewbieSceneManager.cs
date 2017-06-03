@@ -261,10 +261,6 @@ public class NewbieSceneManager : MonoBehaviour {
                 {
                     t1 = prev_render_time;
                 }
-                else
-                {
-                    render_time = prev_render_time;
-                }
                 /*
                 else
                 {
@@ -275,10 +271,6 @@ public class NewbieSceneManager : MonoBehaviour {
                 //pos2 = enemyTankInfo.snapshots[1].pos;
                 pos1 = enemyTankInfo.obj.transform.position;
                 rot1 = enemyTankInfo.obj.transform.rotation;
-            }
-            else if (render_time > enemyTankInfo.snapshots[2].timestamp)
-            {
-                render_time = enemyTankInfo.snapshots[2].timestamp;
             }
             
 
