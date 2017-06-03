@@ -260,6 +260,8 @@ public class NewbieSceneManager : MonoBehaviour {
                 if (prev_render_time < render_time)
                 {
                     t1 = prev_render_time;
+                    pos1 = enemyTankInfo.obj.transform.position;
+                    rot1 = enemyTankInfo.obj.transform.rotation;
                 }
                 /*
                 else
@@ -269,9 +271,9 @@ public class NewbieSceneManager : MonoBehaviour {
                 */
 
                 //pos2 = enemyTankInfo.snapshots[1].pos;
-                pos1 = enemyTankInfo.obj.transform.position;
-                rot1 = enemyTankInfo.obj.transform.rotation;
             }
+
+            if (render_time < prev_render_time) continue;
             
 
             if (render_time <= t2 && render_time >= t1 && is_interpolation)
