@@ -257,13 +257,15 @@ public class NewbieSceneManager : MonoBehaviour {
             if (render_time < enemyTankInfo.snapshots[1].timestamp)
             {
                 //t2 = enemyTankInfo.snapshots[1].timestamp;
-                if (prev_render_time < render_time)
+                
+                t1 = prev_render_time;
+                pos1 = enemyTankInfo.obj.transform.position;
+                rot1 = enemyTankInfo.obj.transform.rotation;
+
+                if (prev_render_time > render_time)
                 {
-                    t1 = prev_render_time;
-                }
-                else
-                {
-                    render_time = prev_render_time;
+                    // 렌더타임의 기존의 렌더타임보다 느릴경우
+                    render_time = prev_render_time + Convert.ToInt64(Time.deltaTime);
                 }
                 /*
                 else
@@ -273,8 +275,6 @@ public class NewbieSceneManager : MonoBehaviour {
                 */
 
                 //pos2 = enemyTankInfo.snapshots[1].pos;
-                pos1 = enemyTankInfo.obj.transform.position;
-                rot1 = enemyTankInfo.obj.transform.rotation;
             }
             else if (render_time > enemyTankInfo.snapshots[2].timestamp)
             {
