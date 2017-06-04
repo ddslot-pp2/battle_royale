@@ -260,20 +260,22 @@ public class NewbieSceneManager : MonoBehaviour {
                 if (prev_render_time < render_time)
                 {
                     t1 = prev_render_time;
-                    pos1 = enemyTankInfo.obj.transform.position;
-                    rot1 = enemyTankInfo.obj.transform.rotation;
+                    Debug.Log("xxxx");
                 }
-                /*
-                else
-                {
-                    t1 = render_time - (Int64)Time.deltaTime;
-                }
-                */
+
+                pos1 = enemyTankInfo.obj.transform.position;
+                rot1 = enemyTankInfo.obj.transform.rotation;
 
                 //pos2 = enemyTankInfo.snapshots[1].pos;
             }
 
-            if (render_time < prev_render_time) continue;
+            if (render_time < enemyTankInfo.snapshots[0].timestamp)
+            {
+                Debug.Log("골떄리리리리상황");
+                continue;
+            }
+
+           // if (render_time < prev_render_time) continue;
             
 
             if (render_time <= t2 && render_time >= t1 && is_interpolation)
@@ -293,9 +295,13 @@ public class NewbieSceneManager : MonoBehaviour {
                 Debug.Log("R: " + render_time);
                 Debug.Log("2: " + t2);
                 Debug.Log("1: " + t1);
+                Debug.Log("latency: " + avg_latency);
                 Debug.Log("-----------------------------------");
-                //enemyTankInfo.obj.transform.position = pos2;
-                //enemyTankInfo.obj.transform.rotation = rot2;
+                if (t2 < render_time)
+                {
+                    enemyTankInfo.obj.transform.position = pos2;
+                    enemyTankInfo.obj.transform.rotation = rot2;
+                }
             }
 
             prev_render_time = render_time;
