@@ -64,6 +64,8 @@ public class network_module //: MonoBehaviour
         this.end_point_ = new IPEndPoint(IPAddress.Parse(host), port);
         this.socket_ = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
 
+        this.socket_.NoDelay = true;
+
         SocketAsyncEventArgs event_arg = new SocketAsyncEventArgs();
         event_arg.Completed += on_connect;
         event_arg.RemoteEndPoint = this.end_point_;

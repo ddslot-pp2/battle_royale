@@ -129,6 +129,8 @@ public class NewbieSceneManager : MonoBehaviour {
 
     void Start()
     {
+        Screen.sleepTimeout = SleepTimeout.NeverSleep;
+
         enemies = new Dictionary<Int64, EnemyTankInfo>();
 
         session_ = protobuf_session.getInstance();
