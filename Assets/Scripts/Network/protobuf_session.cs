@@ -10,8 +10,8 @@ public class protobuf_session : MonoBehaviour
 {
     private static protobuf_session instance_ = null;
 
-    //const  String IP = "127.0.0.1";
-    const String IP = "112.217.116.82";
+    const  String IP = "127.0.0.1";
+    //const String IP = "112.217.116.82";
     const int PORT = 3000;
 
     static private network_module network_module_;
@@ -248,8 +248,11 @@ public class protobuf_session : MonoBehaviour
                 }
                 else if ((network.opcode)_opcode == network.opcode.SC_PING)
                 {
-                    GAME.SC_PING read = GAME.SC_PING.Parser.ParseFrom(proto_buffer);
-                    ping_time = getServerTimestamp() - protobuf_session.send_time;
+                    GAME.CS_PING send = new GAME.CS_PING();
+                    send.Timestamp = instance_.getServerTimestamp();
+                    instance_.send_protobuf(network.opcode.CS_PING, send);
+                    //GAME.SC_PING read = GAME.SC_PING.Parser.ParseFrom(proto_buffer);
+                    //ping_time = getServerTimestamp() - protobuf_session.send_time;
                     //Debug.Log("ping time: " + ping_time);
                 }
 
