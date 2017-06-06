@@ -54,7 +54,7 @@ public class NewbieSceneManager : MonoBehaviour {
 
     public Int64 prev_render_time = 0;
 
-    private static int max_snapshot_size = 3;
+    private static int max_snapshot_size = 2;
 
     bool is_interpolation = true;
 
@@ -225,36 +225,7 @@ public class NewbieSceneManager : MonoBehaviour {
             var enemyTankInfo = enemy_info.Value;
 
             Int64 now = session_.getServerTimestamp();
-
-            var snapshot_delta_time= enemyTankInfo.snapshots[2].timestamp - enemyTankInfo.snapshots[1].timestamp;
-
-            //Debug.Log("Past: " + Past);  
-            // 랜더타임 잘못됨
-            //Debug.Log(Time.deltaTime);
-            Int64 avg_latency = 0;
-            var latencies = latency_queue_.ToArray();
-            for (var i = 0; i < latencies.Length; ++i)
-            {
-                avg_latency = avg_latency + latencies[i];
-            }
-
-            avg_latency = avg_latency / latencies.Length;
-
-            Debug.Log("latencies 사이즈: " + latencies.Length);
-            Debug.Log("latency: " + avg_latency);
-            /* 
-            if (recv_latency_count != 0)
-            {
-               avg_latency = sum_latency / recv_latency_count;
-            }
-            */
-
-
-            //Debug.Log("avg latency: " + avg_latency);
-
-            //Debug.Log("avg_latency" + avg_latency);
-            var render_time = now - snapshot_delta_time - avg_latency;
-
+           
             //Debug.Log("s: " + snapshot_interval);
             //Debug.Log("n: " + now);
             //Debug.Log("r: " + render_time);
@@ -263,43 +234,23 @@ public class NewbieSceneManager : MonoBehaviour {
             //Debug.Log("======================================");
 
 
-            var t2 = enemyTankInfo.snapshots[2].timestamp;
-            var t1 = enemyTankInfo.snapshots[1].timestamp;
+            var t2 = enemyTankInfo.snapshots[1].timestamp;
+            var t1 = enemyTankInfo.snapshots[0].timestamp;
 
-            var pos2 = enemyTankInfo.snapshots[2].pos;
-            var pos1 = enemyTankInfo.snapshots[1].pos;
+            var pos2 = enemyTankInfo.snapshots[1].pos;
+            var pos1 = enemyTankInfo.snapshots[0].pos;
 
-            var rot2 = enemyTankInfo.snapshots[2].rot;
-            var rot1 = enemyTankInfo.snapshots[1].rot;
+            var rot2 = enemyTankInfo.snapshots[1].rot;
+            var rot1 = enemyTankInfo.snapshots[0].rot;
 
-            //Debug.Log("render delta : " + (t2 - t1));
+            var render_time = now - ((t2 - t1) + enemyTankInfo.snapshots[1].latency);
 
-            if (render_time < enemyTankInfo.snapshots[1].timestamp)
-            {
-                //t2 = enemyTankInfo.snapshots[1].timestamp;
-                if (prev_render_time < render_time)
-                {
-                    t1 = prev_render_time;
-                    Debug.Log("xxxx");
-                }
-
-                pos1 = enemyTankInfo.obj.transform.position;
-                rot1 = enemyTankInfo.obj.transform.rotation;
-
-                //pos2 = enemyTankInfo.snapshots[1].pos;
-            }
-
-            if (render_time < enemyTankInfo.snapshots[0].timestamp)
-            {
-                Debug.Log("골떄리리리리상황");
-                continue;
-            }
-
-           // if (render_time < prev_render_time) continue;
-            
+            //Debug.Log("client interval: " + (t2 - t1));
+            //Debug.Log("latency: " + enemyTankInfo.snapshots[1].latency);
 
             if (render_time <= t2 && render_time >= t1 && is_interpolation)
             {
+                //Debug.Log("@@보간@@");
                 var total = t2 - t1;
                 var portion = render_time - t1;
                 var ratio = (float)portion / (float)total;
@@ -311,20 +262,16 @@ public class NewbieSceneManager : MonoBehaviour {
             }
             else
             {
+                /*
+                Debug.Log("보간 안함");
                 Debug.Log("N: " + now);
                 Debug.Log("R: " + render_time);
-                Debug.Log("2: " + t2);
-                Debug.Log("1: " + t1);
-                Debug.Log("latency: " + avg_latency);
-                Debug.Log("-----------------------------------");
-                if (t2 < render_time)
-                {
-                    enemyTankInfo.obj.transform.position = pos2;
-                    enemyTankInfo.obj.transform.rotation = rot2;
-                }
+                Debug.Log("2 : " + t2);
+                Debug.Log("1 : " + t1);
+                */
+                enemyTankInfo.obj.transform.position = pos2;
+                enemyTankInfo.obj.transform.rotation = rot2;       
             }
-
-            prev_render_time = render_time;
                 /*
                 var t1 = enemyTankInfo.prev_last_info.timestamp;
                 var t2 = enemyTankInfo.last_info.timestamp;
@@ -467,24 +414,15 @@ public class NewbieSceneManager : MonoBehaviour {
         if (enemyTankInfo != null)
         {
             enemyTankInfo.snapshots[0].timestamp = enemyTankInfo.snapshots[1].timestamp;
-            enemyTankInfo.snapshots[0].pos       = enemyTankInfo.snapshots[1].pos;
-            enemyTankInfo.snapshots[0].rot       = enemyTankInfo.snapshots[1].rot;
-            enemyTankInfo.snapshots[0].latency   = enemyTankInfo.snapshots[1].latency;
+            enemyTankInfo.snapshots[0].pos = enemyTankInfo.snapshots[1].pos;
+            enemyTankInfo.snapshots[0].rot = enemyTankInfo.snapshots[1].rot;
+            enemyTankInfo.snapshots[0].latency = enemyTankInfo.snapshots[1].latency;
 
-            enemyTankInfo.snapshots[1].timestamp = enemyTankInfo.snapshots[2].timestamp;
-            enemyTankInfo.snapshots[1].pos = enemyTankInfo.snapshots[2].pos;
-            enemyTankInfo.snapshots[1].rot = enemyTankInfo.snapshots[2].rot;
-            enemyTankInfo.snapshots[1].latency = enemyTankInfo.snapshots[2].latency;
+            enemyTankInfo.snapshots[1].timestamp = read.Timestamp;
+            enemyTankInfo.snapshots[1].pos       = new Vector3(read.PosX, read.PosY, read.PosZ);
+            enemyTankInfo.snapshots[1].rot       = new Quaternion(read.RotX, read.RotY, read.RotZ, read.RotW);
+            enemyTankInfo.snapshots[1].latency   = session_.getServerTimestamp() - read.Timestamp;
 
-            enemyTankInfo.snapshots[2].timestamp = read.Timestamp;
-            enemyTankInfo.snapshots[2].pos       = new Vector3(read.PosX, read.PosY, read.PosZ);
-            enemyTankInfo.snapshots[2].rot       = new Quaternion(read.RotX, read.RotY, read.RotZ, read.RotW);
-            enemyTankInfo.snapshots[2].latency   = session_.getServerTimestamp() - read.Timestamp;
-
-            //sum_latency = sum_latency + enemyTankInfo.snapshots[2].latency;
-            ++recv_latency_count;
-
-            enqueue_latency(enemyTankInfo.snapshots[2].latency);
 
             /*
             enemyTankInfo.prev_last_info.timestamp = enemyTankInfo.last_info.timestamp;
@@ -530,22 +468,5 @@ public class NewbieSceneManager : MonoBehaviour {
         var enemy = enemies[key];
         Destroy(enemy.obj);
         enemies.Remove(key);
-    }
-
-    void enqueue_latency(Int64 latency)
-    {
-
-        if (latency_queue_.Count < max_latency_size)
-        {
-
-            Debug.Log("10개가 안되서 바로 넣어줌");
-            latency_queue_.Enqueue(latency);
-            return;
-        }
-
-        Debug.Log("10개 넘어서 1개 빼고 넣어줌");
-
-        latency_queue_.Dequeue();
-        latency_queue_.Enqueue(latency);
     }
 }
