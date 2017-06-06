@@ -58,6 +58,10 @@ public class NewbieSceneManager : MonoBehaviour {
 
     bool is_interpolation = true;
 
+    public Queue<Int64> latency_queue_;
+
+    private static int max_latency_size = 10;
+
     public void OnConnect(bool result)
     {
         if (result)
@@ -109,6 +113,8 @@ public class NewbieSceneManager : MonoBehaviour {
     void init()
     {
         EnterField();
+
+        latency_queue_ = new Queue<Int64>();
     }
 
     public void HandleInterpolationClick()
@@ -206,7 +212,7 @@ public class NewbieSceneManager : MonoBehaviour {
         //
         UpdateEnemiesTank();
 
-        ping_text.text = protobuf_session.ping_time.ToString();
+        //ping_text.text = protobuf_session.ping_time.ToString();
         delta_text.text = Time.deltaTime.ToString();
     }
 
@@ -226,10 +232,22 @@ public class NewbieSceneManager : MonoBehaviour {
             // 랜더타임 잘못됨
             //Debug.Log(Time.deltaTime);
             Int64 avg_latency = 0;
+            var latencies = latency_queue_.ToArray();
+            for (var i = 0; i < latencies.Length; ++i)
+            {
+                avg_latency = avg_latency + latencies[i];
+            }
+
+            avg_latency = avg_latency / latencies.Length;
+
+            Debug.Log("latencies 사이즈: " + latencies.Length);
+            Debug.Log("latency: " + avg_latency);
+            /* 
             if (recv_latency_count != 0)
             {
                avg_latency = sum_latency / recv_latency_count;
             }
+            */
 
 
             //Debug.Log("avg latency: " + avg_latency);
@@ -463,8 +481,10 @@ public class NewbieSceneManager : MonoBehaviour {
             enemyTankInfo.snapshots[2].rot       = new Quaternion(read.RotX, read.RotY, read.RotZ, read.RotW);
             enemyTankInfo.snapshots[2].latency   = session_.getServerTimestamp() - read.Timestamp;
 
-            sum_latency = sum_latency + enemyTankInfo.snapshots[2].latency;
+            //sum_latency = sum_latency + enemyTankInfo.snapshots[2].latency;
             ++recv_latency_count;
+
+            enqueue_latency(enemyTankInfo.snapshots[2].latency);
 
             /*
             enemyTankInfo.prev_last_info.timestamp = enemyTankInfo.last_info.timestamp;
@@ -510,5 +530,22 @@ public class NewbieSceneManager : MonoBehaviour {
         var enemy = enemies[key];
         Destroy(enemy.obj);
         enemies.Remove(key);
+    }
+
+    void enqueue_latency(Int64 latency)
+    {
+
+        if (latency_queue_.Count < max_latency_size)
+        {
+
+            Debug.Log("10개가 안되서 바로 넣어줌");
+            latency_queue_.Enqueue(latency);
+            return;
+        }
+
+        Debug.Log("10개 넘어서 1개 빼고 넣어줌");
+
+        latency_queue_.Dequeue();
+        latency_queue_.Enqueue(latency);
     }
 }
