@@ -122,13 +122,15 @@ public class NewbieSceneManager : MonoBehaviour {
         if (is_interpolation)
         {
             is_interpolation = false;
-            interpolation_text.text = "보간 OFF";
+            //interpolation_text.text = "보간 OFF";
+            interpolation_text.text = "업데이트 2";
             Debug.Log("보간 OFF");
         }
         else
         {
             is_interpolation = true;
-            interpolation_text.text = "보간 ON";
+            //interpolation_text.text = "보간 ON";
+            interpolation_text.text = "업데이트 1";
             Debug.Log("보간 ON");
         }
     }
@@ -156,11 +158,13 @@ public class NewbieSceneManager : MonoBehaviour {
 
         if (is_interpolation)
         {
-            interpolation_text.text = "보간 ON";
+            interpolation_text.text = "업데이트 1";
+            //interpolation_text.text = "보간 ON";
         }
         else
         {
-            interpolation_text.text = "보간 OFF";
+            interpolation_text.text = "업데이트 2";
+            //interpolation_text.text = "보간 OFF";
         }
 
         init();
@@ -210,7 +214,14 @@ public class NewbieSceneManager : MonoBehaviour {
         */
 
         //
-        UpdateEnemiesTank2();
+        if (is_interpolation)
+        {
+            UpdateEnemiesTank();
+        }
+        else
+        {
+            UpdateEnemiesTank2();
+        }
 
         //ping_text.text = protobuf_session.ping_time.ToString();
         delta_text.text = Time.deltaTime.ToString();
