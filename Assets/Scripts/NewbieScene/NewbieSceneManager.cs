@@ -315,7 +315,7 @@ public class NewbieSceneManager : MonoBehaviour {
 
         if (distance < radius + radius)
         {
-            Debug.Log("근처에 있음\n");
+            //Debug.Log("근처에 있음\n");
             return true;
         }
 
@@ -341,28 +341,23 @@ public class NewbieSceneManager : MonoBehaviour {
             var r = CheckNearBy(pos2, pos1);
             if (r) return;
 
-
-  
-
             var dir = enemyTankInfo.snapshots[1].pos - enemyTankInfo.obj.transform.position;
             dir.Normalize();
 
 
-            //enemyTankInfo.obj.transform.rotation = Quaternion.LookRotation(dir);
-            
-            enemyTankInfo.obj.transform.Translate(dir * 8 * Time.deltaTime);
 
+            enemyTankInfo.obj.transform.forward = Vector3.Slerp(enemyTankInfo.obj.transform.forward, dir, Time.deltaTime * 10.0f );
+            //enemyTankInfo.obj.transform.forward = new Vector3(dir.x, 0.0f, dir.z);
 
+            //enemyTankInfo.obj.transform.Translate(dir * 8 * Time.deltaTime);
+            enemyTankInfo.obj.transform.position = enemyTankInfo.obj.transform.position + (dir * 8 * Time.deltaTime);
 
-
-
-            //enemyTankInfo.obj.transform.position = Vector3.Lerp(pos1, pos2, ratio);
-            //enemyTankInfo.obj.transform.rotation = Quaternion.Slerp(rot1, rot2, ratio);
-
-
-
+            Debug.Log("cdx: " + dir.x);
+            Debug.Log("cdz: " + dir.z);
         }
     }
+
+  
 
     void Destroy()
     {
