@@ -210,7 +210,7 @@ public class NewbieSceneManager : MonoBehaviour {
         */
 
         //
-        UpdateEnemiesTank();
+        UpdateEnemiesTank2();
 
         //ping_text.text = protobuf_session.ping_time.ToString();
         delta_text.text = Time.deltaTime.ToString();
@@ -304,6 +304,64 @@ public class NewbieSceneManager : MonoBehaviour {
                 */
 
             }    
+    }
+
+    bool CheckNearBy(Vector3 current_pos, Vector3 to_pos, float radius = 0.1f)
+    {
+ 
+        var dx = current_pos.x - to_pos.x;
+        var dz = current_pos.z - to_pos.z;
+        var distance = Math.Sqrt(dx * dx + dz * dz);
+
+        if (distance < radius + radius)
+        {
+            Debug.Log("근처에 있음\n");
+            return true;
+        }
+
+        return false;
+    }
+
+    void UpdateEnemiesTank2()
+    {
+        //ping_text.text = Time.deltaTime.ToString();
+
+        foreach (var enemy_info in enemies)
+        {
+            var enemyTankInfo = enemy_info.Value;
+
+            Int64 now = session_.getServerTimestamp();
+
+            //var t2 = enemyTankInfo.snapshots[1].timestamp;
+            //var t1 = enemyTankInfo.snapshots[0].timestamp;
+
+            var pos2 = enemyTankInfo.snapshots[1].pos;
+            var pos1 = enemyTankInfo.obj.transform.position;
+
+            var r = CheckNearBy(pos2, pos1);
+            if (r) return;
+
+
+  
+
+            var dir = enemyTankInfo.snapshots[1].pos - enemyTankInfo.obj.transform.position;
+            dir.Normalize();
+
+
+            //enemyTankInfo.obj.transform.rotation = Quaternion.LookRotation(dir);
+            
+            enemyTankInfo.obj.transform.Translate(dir * 8 * Time.deltaTime);
+
+
+
+
+
+            //enemyTankInfo.obj.transform.position = Vector3.Lerp(pos1, pos2, ratio);
+            //enemyTankInfo.obj.transform.rotation = Quaternion.Slerp(rot1, rot2, ratio);
+
+
+
+        }
     }
 
     void Destroy()

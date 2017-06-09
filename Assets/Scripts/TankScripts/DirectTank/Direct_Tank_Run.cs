@@ -27,7 +27,11 @@ public class Direct_Tank_Run : MonoBehaviour {
             lookDirection = controller.dir.x * Vector3.right + controller.dir.y * Vector3.forward;
             playertank1.rotation = Quaternion.LookRotation(state.direct * lookDirection);
             if (controller.dir != new Vector3(0, 0, 0))
-                playertank1.Translate(state.forward * state.moveSpeed * Time.deltaTime);
+            {
+                Debug.Log(state.moveSpeed);
+                var dir = state.forward.normalized;
+                playertank1.Translate(dir * state.moveSpeed * Time.deltaTime);
+            }
         }
     }
 }
