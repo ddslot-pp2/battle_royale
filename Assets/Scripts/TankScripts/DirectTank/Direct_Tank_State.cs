@@ -20,7 +20,7 @@ public class Direct_Tank_State : Tank_State {
         direct = 1f;
         forward = Vector3.forward;
         attAply = 0;
-        range = 10.0f;
+        range = 1000.0f;
 
         soldier = new GameObject[5];
     }

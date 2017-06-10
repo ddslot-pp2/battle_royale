@@ -27,25 +27,21 @@ public class Direct_Tank_Topfire : MonoBehaviour {
 
     void Update()
     {
-        int count = Input.touchCount;
-        for (int i = 0; i < count; i++)
+        if (Input.GetMouseButtonDown(0))
         {
-            if (EventSystem.current.IsPointerOverGameObject(i) == false)
-            {
-                if (Input.GetTouch(i).phase == TouchPhase.Began)
-                {
-                    Physics.Raycast(Camera.main.ScreenPointToRay(Input.GetTouch(i).position), out TFire);
-                    Click = TFire.point;
-                    dir = Quaternion.LookRotation((Click - transform.position).normalized);
-                    dir.x = 0;
-                    dir.z = 0;
 
-                    transform.rotation = dir;
+            Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out TFire);
+            Click = TFire.point;
+            Click.y = transform.position.y;
+            dir = Quaternion.LookRotation((Click - transform.position).normalized);
 
-                    Fire();
-                }
+            transform.rotation = dir;
+
+
+            Fire();
+                
             }
-        }
+        
     }
 
     void Fire()

@@ -8,7 +8,7 @@ public class DirectBullet : MonoBehaviour {
     //총알 초기 위치
     public Vector3 first;
     //총알 발사 속도
-    public float speed = 1000.0f;
+    public float speed;
     public float distance;
     public GameObject ExpEffect;
     public float hitCount;
@@ -18,6 +18,8 @@ public class DirectBullet : MonoBehaviour {
 
     void Start()
     {
+        speed = 1400f;
+        distance = 100;
         hitCountDown = 0;
         first = gameObject.transform.position;
         GetComponent<Rigidbody>().AddForce(transform.forward * speed);
@@ -27,8 +29,6 @@ public class DirectBullet : MonoBehaviour {
     {
         if (Vector3.Distance(first, transform.position) >= distance)
         {
-            GameObject exp = Instantiate(ExpEffect, transform.position, transform.rotation);
-            Destroy(exp, 1.0f);
             Destroy(gameObject);
         }
     }
@@ -39,6 +39,7 @@ public class DirectBullet : MonoBehaviour {
         this.hitCount = hitCount;
         this.attacker = attacker;
         this.distance = distance;
+        Debug.Log(distance);
     }
 
     void OnTriggerEnter(Collider other)
