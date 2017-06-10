@@ -66,7 +66,7 @@ public class NewbieSceneManager : MonoBehaviour {
     {
         if (result)
         {
-            Debug.Log("접속 성공");
+            Debug.Log("접속 성공2");
         }
         else
         {
