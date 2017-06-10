@@ -12,7 +12,7 @@ public class LobbySceneManager : MonoBehaviour {
     {
         if (result)
         {
-            Debug.Log("접속 성공");
+            Debug.Log("접속 성공3");
         }
         else
         {
