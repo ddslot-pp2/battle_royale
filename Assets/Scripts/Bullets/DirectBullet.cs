@@ -18,27 +18,28 @@ public class DirectBullet : MonoBehaviour {
 
     void Start()
     {
-        speed = 1400f;
         distance = 100;
         hitCountDown = 0;
         first = gameObject.transform.position;
-        GetComponent<Rigidbody>().AddForce(transform.forward * speed);
     }
 
     void Update()
     {
+        transform.position += transform.forward * Time.deltaTime * speed;  
+
         if (Vector3.Distance(first, transform.position) >= distance)
         {
             Destroy(gameObject);
         }
     }
 
-    public void GetDamageType(int damage, int hitCount, GameObject attacker, float distance)
+    public void GetDamageType(int damage, int hitCount, GameObject attacker, float distance, float speed)
     {
         this.damage = damage;
         this.hitCount = hitCount;
         this.attacker = attacker;
         this.distance = distance;
+        this.speed = speed;
         Debug.Log(distance);
     }
 

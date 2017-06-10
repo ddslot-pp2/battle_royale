@@ -61,7 +61,7 @@ public class Direct_Tank_Topfire : MonoBehaviour {
         //Bullet 프리팹을 동적으로 생성
         GameObject bulletLocalSize = Instantiate(state.bullet, firePos_p1.position, firePos_p1.rotation);
         bulletLocalSize.transform.localScale = new Vector3(bulletLocalSize.transform.localScale.x * state.bulletSize, bulletLocalSize.transform.localScale.y * state.bulletSize, bulletLocalSize.transform.localScale.z * state.bulletSize);
-        bulletLocalSize.GetComponent<DirectBullet>().GetDamageType(state.damage , 2, transform.parent.gameObject, state.range);
+        bulletLocalSize.GetComponent<DirectBullet>().GetDamageType(state.damage, 2, transform.parent.gameObject, state.range, 18.0f);
     }
 
     IEnumerator ShowMuzzleFlash()
