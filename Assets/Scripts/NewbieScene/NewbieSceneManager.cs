@@ -363,8 +363,8 @@ public class NewbieSceneManager : MonoBehaviour {
             //enemyTankInfo.obj.transform.Translate(dir * 8 * Time.deltaTime);
             enemyTankInfo.obj.transform.position = enemyTankInfo.obj.transform.position + (dir * 8 * Time.deltaTime);
 
-            Debug.Log("cdx: " + dir.x);
-            Debug.Log("cdz: " + dir.z);
+            //Debug.Log("cdx: " + dir.x);
+            //Debug.Log("cdz: " + dir.z);
         }
     }
 
@@ -392,6 +392,8 @@ public class NewbieSceneManager : MonoBehaviour {
 
         var pos = player.transform.position;
         var rot = player.transform.rotation;
+
+        Debug.Log("x: " + pos.x + ", y: " + pos.y + ", z: " + pos.z);
 
         GAME.CS_MOVE_OBJECT send = new GAME.CS_MOVE_OBJECT();
 
