@@ -5,7 +5,8 @@ using network;
 using System;
 using UnityEngine.UI;
 
-public class NewbieSceneManager : MonoBehaviour {
+public class NewbieSceneManager : MonoBehaviour
+{
 
     private protobuf_session session_;
 
@@ -62,6 +63,8 @@ public class NewbieSceneManager : MonoBehaviour {
 
     private static int max_latency_size = 10;
 
+    private Int64 key_ = 0;
+
     public void OnConnect(bool result)
     {
         if (result)
@@ -104,10 +107,11 @@ public class NewbieSceneManager : MonoBehaviour {
     // 여기에 이 씬에서 사용할 패킷 callback을 등록
     void RegisterProcessorHandler()
     {
-        session_.processor_SC_ENTER_FIELD = processor_SC_ENTER_FIELD;
+        session_.processor_SC_ENTER_FIELD      = processor_SC_ENTER_FIELD;
         session_.processor_SC_NOTI_ENTER_FIELD = processor_SC_NOTI_ENTER_FIELD;
         session_.processor_SC_NOTI_MOVE_OBJECT = processor_SC_NOTI_MOVE_OBJECT;
         session_.processor_SC_NOTI_LEAVE_FIELD = processor_SC_NOTI_LEAVE_FIELD;
+        session_.processor_SC_NOTI_USE_SKILL   = processor_SC_NOTI_USE_SKILL;
     }
 
     void init()
@@ -229,21 +233,11 @@ public class NewbieSceneManager : MonoBehaviour {
 
     void UpdateEnemiesTank()
     {
-        //ping_text.text = Time.deltaTime.ToString();
-
         foreach (var enemy_info in enemies)
         {
             var enemyTankInfo = enemy_info.Value;
 
             Int64 now = session_.getServerTimestamp();
-           
-            //Debug.Log("s: " + snapshot_interval);
-            //Debug.Log("n: " + now);
-            //Debug.Log("r: " + render_time);
-            //Debug.Log("latency : " + avg_latency);
-            //Debug.Log("d: " + (now - render_time));
-            //Debug.Log("======================================");
-
 
             var t2 = enemyTankInfo.snapshots[1].timestamp;
             var t1 = enemyTankInfo.snapshots[0].timestamp;
@@ -256,70 +250,27 @@ public class NewbieSceneManager : MonoBehaviour {
 
             var render_time = now - ((t2 - t1) + enemyTankInfo.snapshots[1].latency);
 
-            //Debug.Log("client interval: " + (t2 - t1));
-            //Debug.Log("latency: " + enemyTankInfo.snapshots[1].latency);
-
             if (render_time <= t2 && render_time >= t1 && is_interpolation)
             {
-                //Debug.Log("@@보간@@");
                 var total = t2 - t1;
                 var portion = render_time - t1;
                 var ratio = (float)portion / (float)total;
-
-                //Debug.Log("ratio: " + ratio);
 
                 enemyTankInfo.obj.transform.position = Vector3.Lerp(pos1, pos2, ratio);
                 enemyTankInfo.obj.transform.rotation = Quaternion.Slerp(rot1, rot2, ratio);
             }
             else
             {
-                /*
-                Debug.Log("보간 안함");
-                Debug.Log("N: " + now);
-                Debug.Log("R: " + render_time);
-                Debug.Log("2 : " + t2);
-                Debug.Log("1 : " + t1);
-                */
                 enemyTankInfo.obj.transform.position = pos2;
-                enemyTankInfo.obj.transform.rotation = rot2;       
+                enemyTankInfo.obj.transform.rotation = rot2;
             }
-                /*
-                var t1 = enemyTankInfo.prev_last_info.timestamp;
-                var t2 = enemyTankInfo.last_info.timestamp;
-
-                if (render_time <= t2 && render_time >= t1 && is_interpolation)
-                {     
-                    // 서버에서 패킷이 올때까지 걸린시간
-                    var total = t2 - t1 + avg_latency;
-                    //Debug.Log("total: " + total);
-
-                    // 드로우콜하는 현재 렌더시간이랑 마지막으로 패킷을 받은 시간의 차이
-                    var portion = render_time - t1;
-
-                    // 보간량을 측정하는 방법
-                    var ratio = (float)portion / (float)total;
-
-                    enemyTankInfo.obj.transform.position = Vector3.Lerp(enemyTankInfo.prev_last_info.pos, enemyTankInfo.last_info.pos, ratio);
-                    enemyTankInfo.obj.transform.rotation = Quaternion.Slerp(enemyTankInfo.prev_last_info.rot, enemyTankInfo.last_info.rot, ratio);
-                }
-                else
-                {
-                    Debug.Log("N: " + now);
-                    Debug.Log("R: " + render_time);
-                    Debug.Log("2 : " + t2);
-                    Debug.Log("1 : " + t1);
-
-                    enemyTankInfo.obj.transform.position = enemyTankInfo.last_info.pos;
-                    enemyTankInfo.obj.transform.rotation = enemyTankInfo.last_info.rot;
-                }
-                */
-
-            }    
+ 
+        }
     }
 
     bool CheckNearBy(Vector3 current_pos, Vector3 to_pos, float radius = 0.1f)
     {
- 
+
         var dx = current_pos.x - to_pos.x;
         var dz = current_pos.z - to_pos.z;
         var distance = Math.Sqrt(dx * dx + dz * dz);
@@ -357,7 +308,7 @@ public class NewbieSceneManager : MonoBehaviour {
 
 
 
-            enemyTankInfo.obj.transform.forward = Vector3.Slerp(enemyTankInfo.obj.transform.forward, dir, Time.deltaTime * 10.0f );
+            enemyTankInfo.obj.transform.forward = Vector3.Slerp(enemyTankInfo.obj.transform.forward, dir, Time.deltaTime * 10.0f);
             //enemyTankInfo.obj.transform.forward = new Vector3(dir.x, 0.0f, dir.z);
 
             //enemyTankInfo.obj.transform.Translate(dir * 8 * Time.deltaTime);
@@ -368,7 +319,7 @@ public class NewbieSceneManager : MonoBehaviour {
         }
     }
 
-  
+
 
     void Destroy()
     {
@@ -383,7 +334,7 @@ public class NewbieSceneManager : MonoBehaviour {
 
     void LeaveField()
     {
-        
+
     }
 
     void Send_MOVE_OBJECT()
@@ -393,7 +344,7 @@ public class NewbieSceneManager : MonoBehaviour {
         var pos = player.transform.position;
         var rot = player.transform.rotation;
 
-        Debug.Log("x: " + pos.x + ", y: " + pos.y + ", z: " + pos.z);
+        //Debug.Log("x: " + pos.x + ", y: " + pos.y + ", z: " + pos.z);
 
         GAME.CS_MOVE_OBJECT send = new GAME.CS_MOVE_OBJECT();
 
@@ -412,6 +363,11 @@ public class NewbieSceneManager : MonoBehaviour {
 
     void processor_SC_ENTER_FIELD(GAME.SC_ENTER_FIELD read)
     {
+        key_ = read.Key;
+
+        GameObject player = GameObject.Find("PlayerTank1");
+        player.transform.position = new Vector3(read.PosX, read.PosY, read.PosZ);
+
         Debug.Log("processor_GAME_SC_ENTER_FIELD 받음");
         foreach (var other in read.UserInfos)
         {
@@ -435,7 +391,7 @@ public class NewbieSceneManager : MonoBehaviour {
             enemies[other.Key] = enemy_tank_info;
 
             Debug.Log("count: " + enemies.Count);
-        }   
+        }
     }
 
     void processor_SC_NOTI_ENTER_FIELD(GAME.SC_NOTI_ENTER_FIELD read)
@@ -446,7 +402,7 @@ public class NewbieSceneManager : MonoBehaviour {
         Int64 timestamp = read.Timestamp;
 
         Debug.Log("SC_NOTI_ENTER_FIELD");
- 
+
         var enemyTank = Instantiate(Resources.Load("Prefabs/EnemyTank2")) as GameObject;
         enemyTank.transform.position = pos;
 
@@ -485,9 +441,9 @@ public class NewbieSceneManager : MonoBehaviour {
             enemyTankInfo.snapshots[0].latency = enemyTankInfo.snapshots[1].latency;
 
             enemyTankInfo.snapshots[1].timestamp = read.Timestamp;
-            enemyTankInfo.snapshots[1].pos       = new Vector3(read.PosX, read.PosY, read.PosZ);
-            enemyTankInfo.snapshots[1].rot       = new Quaternion(read.RotX, read.RotY, read.RotZ, read.RotW);
-            enemyTankInfo.snapshots[1].latency   = session_.getServerTimestamp() - read.Timestamp;
+            enemyTankInfo.snapshots[1].pos = new Vector3(read.PosX, read.PosY, read.PosZ);
+            enemyTankInfo.snapshots[1].rot = new Quaternion(read.RotX, read.RotY, read.RotZ, read.RotW);
+            enemyTankInfo.snapshots[1].latency = session_.getServerTimestamp() - read.Timestamp;
 
 
             /*
@@ -534,5 +490,33 @@ public class NewbieSceneManager : MonoBehaviour {
         var enemy = enemies[key];
         Destroy(enemy.obj);
         enemies.Remove(key);
+    }
+
+    void processor_SC_NOTI_USE_SKILL(GAME.SC_NOTI_USE_SKILL read)
+    {
+        var skill_id = read.SkillId;
+        var rot = new Quaternion(read.RotX, read.RotY, read.RotZ, read.RotW);
+        var pos = new Vector3(read.PosX, read.PosY, read.PosZ);
+        var forward = new Vector3(read.ForwardX, read.ForwardY, read.ForwardZ);
+        var distance = read.Distance;
+        var speed = read.Speed;
+
+        // 먼저 본인인지 구별
+        if (key_ == read.Key)
+        {
+            Debug.Log("본인 스킬\n");
+            GameObject top = GameObject.Find("Top");
+            if (top)
+            {
+                var script = top.GetComponent<Direct_Tank_Topfire>();
+                script.Fire(rot, pos, forward, distance, speed);
+            }
+            //var top = player.Find("Top");
+
+            return;
+        }
+
+        //Top
+        Debug.Log("패킷받음");
     }
 }

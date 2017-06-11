@@ -176,6 +176,10 @@ public class protobuf_session : MonoBehaviour
     public delegate void SC_NOTI_LEAVE_FIELD(GAME.SC_NOTI_LEAVE_FIELD read);
     public SC_NOTI_LEAVE_FIELD processor_SC_NOTI_LEAVE_FIELD = null;
 
+    // SC_NOTI_USE_SKILL
+    public delegate void SC_NOTI_USE_SKILL(GAME.SC_NOTI_USE_SKILL read);
+    public SC_NOTI_USE_SKILL processor_SC_NOTI_USE_SKILL = null;
+
 
     // 패킷 처리
     public void process_packet()
@@ -254,6 +258,14 @@ public class protobuf_session : MonoBehaviour
                     //GAME.SC_PING read = GAME.SC_PING.Parser.ParseFrom(proto_buffer);
                     //ping_time = getServerTimestamp() - protobuf_session.send_time;
                     //Debug.Log("ping time: " + ping_time);
+                }
+                else if ((network.opcode)_opcode == network.opcode.SC_NOTI_USE_SKILL)
+                {
+                    GAME.SC_NOTI_USE_SKILL read = GAME.SC_NOTI_USE_SKILL.Parser.ParseFrom(proto_buffer);
+                    if (processor_SC_NOTI_USE_SKILL != null)
+                    {
+                        processor_SC_NOTI_USE_SKILL(read);
+                    }
                 }
 
             }
