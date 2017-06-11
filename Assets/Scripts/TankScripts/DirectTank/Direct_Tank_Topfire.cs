@@ -27,6 +27,24 @@ public class Direct_Tank_Topfire : MonoBehaviour {
 
     void Update()
     {
+
+#if UNITY_STANDALONE_WIN
+        // pc
+        if (Input.GetMouseButtonDown(0))
+        {
+            Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out TFire);
+            Click = TFire.point;
+            Click.y = transform.position.y;
+            dir = Quaternion.LookRotation((Click - transform.position).normalized);
+
+            transform.rotation = dir;
+            Fire();
+        }
+#endif
+
+
+#if UNITY_ANDROID
+        // mobile device
         int count = Input.touchCount;
         for (int i = 0; i < count; i++)
         {
@@ -42,12 +60,12 @@ public class Direct_Tank_Topfire : MonoBehaviour {
 
                     transform.rotation = dir;
 
-
                     Fire();
-
                 }
             }
         }
+#endif
+
     }
 
     void Fire()
