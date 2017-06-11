@@ -510,6 +510,14 @@ public class NewbieSceneManager : MonoBehaviour
             {
                 var script = top.GetComponent<Direct_Tank_Topfire>();
                 script.Fire(rot, pos, forward, distance, speed);
+
+                var state = script.state;
+
+                pos.y = script.GetBulletStartY();
+                var bullet = Instantiate(state.bullet, pos, rot);
+                bullet.transform.localScale = new Vector3(bullet.transform.localScale.x * state.bulletSize, bullet.transform.localScale.y * state.bulletSize, bullet.transform.localScale.z * state.bulletSize);
+                GameObject player = GameObject.Find("PlayerTank1");
+                bullet.GetComponent<DirectBullet>().GetDamageType(state.damage, 2, player, state.range, 18.0f);
             }
             //var top = player.Find("Top");
 

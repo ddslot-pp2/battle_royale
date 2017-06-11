@@ -15,7 +15,7 @@ public class Direct_Tank_Topfire : MonoBehaviour {
     RaycastHit TFire;
     Vector3 Click;
     Quaternion dir;
-    Tank_State state;
+    public Tank_State state;
 
     //Dictionary<Int64, GameObject> bullets = null;
 
@@ -114,19 +114,27 @@ public class Direct_Tank_Topfire : MonoBehaviour {
         Debug.Log("호출2");
         transform.rotation = rot;
 
-        CreateBullet(rot, pos, forward, distance, speed);
+        //CreateBullet(rot, pos, forward, distance, speed);
 
-        //잠시 기다리는 루틴을 위해 코루틴 함수로 호출
-        StartCoroutine(this.ShowMuzzleFlash());
+        // 잠시 기다리는 루틴을 위해 코루틴 함수로 호출
+        // 불렛나갈때 포구앞 효과
+        //StartCoroutine(this.ShowMuzzleFlash());
     }
 
     void CreateBullet(Quaternion rot, Vector3 pos, Vector3 forward, float distance, float speed)
     {
         //Bullet 프리팹을 동적으로 생성
+        pos.y = GetBulletStartY();
         var bullet = Instantiate(state.bullet, pos, rot);
         bullet.transform.localScale = new Vector3(bullet.transform.localScale.x * state.bulletSize, bullet.transform.localScale.y * state.bulletSize, bullet.transform.localScale.z * state.bulletSize);
         bullet.GetComponent<DirectBullet>().GetDamageType(state.damage, 2, transform.parent.gameObject, state.range, 18.0f);
     }
+
+    public float GetBulletStartY()
+    {
+        return firePos_p1.position.y;
+    }
+
 
     void CreateBullet()
     {
