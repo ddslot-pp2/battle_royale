@@ -47,9 +47,11 @@ namespace GAME {
             "X3kYBSABKAISDQoFcG9zX3oYBiABKAISEQoJZm9yd2FyZF94GAcgASgCEhEK",
             "CWZvcndhcmRfeRgIIAEoAhIRCglmb3J3YXJkX3oYCSABKAISDQoFcm90X3gY",
             "CiABKAISDQoFcm90X3kYCyABKAISDQoFcm90X3oYDCABKAISDQoFcm90X3cY",
-            "DSABKAISEAoIZGlzdGFuY2UYDiABKAISDQoFc3BlZWQYDyABKAIiHAoHQ1Nf",
-            "UElORxIRCgl0aW1lc3RhbXAYASABKAMiHAoHU0NfUElORxIRCgl0aW1lc3Rh",
-            "bXAYASABKANiBnByb3RvMw=="));
+            "DSABKAISEAoIZGlzdGFuY2UYDiABKAISDQoFc3BlZWQYDyABKAIiTgoVU0Nf",
+            "Tk9USV9ERVNUUk9ZX1NLSUxMEhEKCXNraWxsX2tleRgBIAEoAxISCgp0YXJn",
+            "ZXRfa2V5GAIgASgDEg4KBmRhbWFnZRgDIAEoAiIcCgdDU19QSU5HEhEKCXRp",
+            "bWVzdGFtcBgBIAEoAyIcCgdTQ19QSU5HEhEKCXRpbWVzdGFtcBgBIAEoA2IG",
+            "cHJvdG8z"));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
           new pbr::GeneratedClrTypeInfo(null, new pbr::GeneratedClrTypeInfo[] {
@@ -63,6 +65,7 @@ namespace GAME {
             new pbr::GeneratedClrTypeInfo(typeof(global::GAME.SC_NOTI_MOVE_OBJECT), global::GAME.SC_NOTI_MOVE_OBJECT.Parser, new[]{ "Key", "PosX", "PosY", "PosZ", "RotX", "RotY", "RotZ", "RotW", "Timestamp" }, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::GAME.CS_USE_SKILL), global::GAME.CS_USE_SKILL.Parser, new[]{ "SkillId", "ForwardX", "ForwardY", "ForwardZ", "RotX", "RotY", "RotZ", "RotW" }, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::GAME.SC_NOTI_USE_SKILL), global::GAME.SC_NOTI_USE_SKILL.Parser, new[]{ "Key", "SkillKey", "SkillId", "PosX", "PosY", "PosZ", "ForwardX", "ForwardY", "ForwardZ", "RotX", "RotY", "RotZ", "RotW", "Distance", "Speed" }, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::GAME.SC_NOTI_DESTROY_SKILL), global::GAME.SC_NOTI_DESTROY_SKILL.Parser, new[]{ "SkillKey", "TargetKey", "Damage" }, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::GAME.CS_PING), global::GAME.CS_PING.Parser, new[]{ "Timestamp" }, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::GAME.SC_PING), global::GAME.SC_PING.Parser, new[]{ "Timestamp" }, null, null, null)
           }));
@@ -2633,6 +2636,179 @@ namespace GAME {
 
   }
 
+  public sealed partial class SC_NOTI_DESTROY_SKILL : pb::IMessage<SC_NOTI_DESTROY_SKILL> {
+    private static readonly pb::MessageParser<SC_NOTI_DESTROY_SKILL> _parser = new pb::MessageParser<SC_NOTI_DESTROY_SKILL>(() => new SC_NOTI_DESTROY_SKILL());
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public static pb::MessageParser<SC_NOTI_DESTROY_SKILL> Parser { get { return _parser; } }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public static pbr::MessageDescriptor Descriptor {
+      get { return global::GAME.GAMEReflection.Descriptor.MessageTypes[10]; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    pbr::MessageDescriptor pb::IMessage.Descriptor {
+      get { return Descriptor; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public SC_NOTI_DESTROY_SKILL() {
+      OnConstruction();
+    }
+
+    partial void OnConstruction();
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public SC_NOTI_DESTROY_SKILL(SC_NOTI_DESTROY_SKILL other) : this() {
+      skillKey_ = other.skillKey_;
+      targetKey_ = other.targetKey_;
+      damage_ = other.damage_;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public SC_NOTI_DESTROY_SKILL Clone() {
+      return new SC_NOTI_DESTROY_SKILL(this);
+    }
+
+    /// <summary>Field number for the "skill_key" field.</summary>
+    public const int SkillKeyFieldNumber = 1;
+    private long skillKey_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public long SkillKey {
+      get { return skillKey_; }
+      set {
+        skillKey_ = value;
+      }
+    }
+
+    /// <summary>Field number for the "target_key" field.</summary>
+    public const int TargetKeyFieldNumber = 2;
+    private long targetKey_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public long TargetKey {
+      get { return targetKey_; }
+      set {
+        targetKey_ = value;
+      }
+    }
+
+    /// <summary>Field number for the "damage" field.</summary>
+    public const int DamageFieldNumber = 3;
+    private float damage_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public float Damage {
+      get { return damage_; }
+      set {
+        damage_ = value;
+      }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override bool Equals(object other) {
+      return Equals(other as SC_NOTI_DESTROY_SKILL);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public bool Equals(SC_NOTI_DESTROY_SKILL other) {
+      if (ReferenceEquals(other, null)) {
+        return false;
+      }
+      if (ReferenceEquals(other, this)) {
+        return true;
+      }
+      if (SkillKey != other.SkillKey) return false;
+      if (TargetKey != other.TargetKey) return false;
+      if (Damage != other.Damage) return false;
+      return true;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override int GetHashCode() {
+      int hash = 1;
+      if (SkillKey != 0L) hash ^= SkillKey.GetHashCode();
+      if (TargetKey != 0L) hash ^= TargetKey.GetHashCode();
+      if (Damage != 0F) hash ^= Damage.GetHashCode();
+      return hash;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override string ToString() {
+      return pb::JsonFormatter.ToDiagnosticString(this);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void WriteTo(pb::CodedOutputStream output) {
+      if (SkillKey != 0L) {
+        output.WriteRawTag(8);
+        output.WriteInt64(SkillKey);
+      }
+      if (TargetKey != 0L) {
+        output.WriteRawTag(16);
+        output.WriteInt64(TargetKey);
+      }
+      if (Damage != 0F) {
+        output.WriteRawTag(29);
+        output.WriteFloat(Damage);
+      }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public int CalculateSize() {
+      int size = 0;
+      if (SkillKey != 0L) {
+        size += 1 + pb::CodedOutputStream.ComputeInt64Size(SkillKey);
+      }
+      if (TargetKey != 0L) {
+        size += 1 + pb::CodedOutputStream.ComputeInt64Size(TargetKey);
+      }
+      if (Damage != 0F) {
+        size += 1 + 4;
+      }
+      return size;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void MergeFrom(SC_NOTI_DESTROY_SKILL other) {
+      if (other == null) {
+        return;
+      }
+      if (other.SkillKey != 0L) {
+        SkillKey = other.SkillKey;
+      }
+      if (other.TargetKey != 0L) {
+        TargetKey = other.TargetKey;
+      }
+      if (other.Damage != 0F) {
+        Damage = other.Damage;
+      }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void MergeFrom(pb::CodedInputStream input) {
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            input.SkipLastField();
+            break;
+          case 8: {
+            SkillKey = input.ReadInt64();
+            break;
+          }
+          case 16: {
+            TargetKey = input.ReadInt64();
+            break;
+          }
+          case 29: {
+            Damage = input.ReadFloat();
+            break;
+          }
+        }
+      }
+    }
+
+  }
+
   public sealed partial class CS_PING : pb::IMessage<CS_PING> {
     private static readonly pb::MessageParser<CS_PING> _parser = new pb::MessageParser<CS_PING>(() => new CS_PING());
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -2640,7 +2816,7 @@ namespace GAME {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::GAME.GAMEReflection.Descriptor.MessageTypes[10]; }
+      get { return global::GAME.GAMEReflection.Descriptor.MessageTypes[11]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -2757,7 +2933,7 @@ namespace GAME {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::GAME.GAMEReflection.Descriptor.MessageTypes[11]; }
+      get { return global::GAME.GAMEReflection.Descriptor.MessageTypes[12]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
