@@ -494,6 +494,7 @@ public class NewbieSceneManager : MonoBehaviour
 
     void processor_SC_NOTI_USE_SKILL(GAME.SC_NOTI_USE_SKILL read)
     {
+        var key = read.Key;
         var skill_id = read.SkillId;
         var rot = new Quaternion(read.RotX, read.RotY, read.RotZ, read.RotW);
         var pos = new Vector3(read.PosX, read.PosY, read.PosZ);
@@ -516,15 +517,42 @@ public class NewbieSceneManager : MonoBehaviour
                 pos.y = script.GetBulletStartY();
                 var bullet = Instantiate(state.bullet, pos, rot);
                 bullet.transform.localScale = new Vector3(bullet.transform.localScale.x * state.bulletSize, bullet.transform.localScale.y * state.bulletSize, bullet.transform.localScale.z * state.bulletSize);
-                GameObject player = GameObject.Find("PlayerTank1");
-                bullet.GetComponent<DirectBullet>().GetDamageType(state.damage, 2, player, state.range, 18.0f);
+                bullet.GetComponent<DirectBullet>().SetProperty(speed, distance);
             }
             //var top = player.Find("Top");
-
             return;
         }
 
-        //Top
+        var enemy_info = enemies[key];
+
+        if (enemy_info != null)
+        {
+            var e = enemy_info.obj;
+            Debug.Log("enemy 존재");
+            var top = e.transform.Find("tank_enemy_02_top").gameObject;
+            if (top != null)
+            {
+                top.transform.rotation = rot;
+
+                var script = GameObject.Find("Top").GetComponent<Direct_Tank_Topfire>();
+                script.Fire(rot, pos, forward, distance, speed);
+
+                var state = script.state;
+
+                pos.y = top.transform.position.y;
+
+                var bullet = Instantiate(Resources.Load("Prefabs/FireBall")) as GameObject;
+
+                bullet.transform.position = pos;
+                bullet.transform.rotation = rot;
+
+                bullet.transform.localScale = new Vector3(bullet.transform.localScale.x * state.bulletSize, bullet.transform.localScale.y * state.bulletSize, bullet.transform.localScale.z * state.bulletSize);
+                bullet.GetComponent<DirectBullet>().SetProperty(speed, distance);
+            }
+         
+        }
+
+
         Debug.Log("패킷받음");
     }
 }

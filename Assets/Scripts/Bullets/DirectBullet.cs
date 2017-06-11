@@ -43,6 +43,12 @@ public class DirectBullet : MonoBehaviour {
         Debug.Log(distance);
     }
 
+    public void SetProperty(float speed, float distance)
+    {
+        this.speed = speed;
+        this.distance = distance;
+    }
+
     void OnTriggerEnter(Collider other)
     {
         Debug.Log(other.name);

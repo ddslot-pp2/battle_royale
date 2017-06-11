@@ -41,14 +41,15 @@ namespace GAME {
             "CCABKAISEQoJdGltZXN0YW1wGAkgASgDIpUBCgxDU19VU0VfU0tJTEwSEAoI",
             "c2tpbGxfaWQYASABKAUSEQoJZm9yd2FyZF94GAIgASgCEhEKCWZvcndhcmRf",
             "eRgDIAEoAhIRCglmb3J3YXJkX3oYBCABKAISDQoFcm90X3gYBSABKAISDQoF",
-            "cm90X3kYBiABKAISDQoFcm90X3oYByABKAISDQoFcm90X3cYCCABKAIi9QEK",
-            "EVNDX05PVElfVVNFX1NLSUxMEgsKA2tleRgBIAEoAxIQCghza2lsbF9pZBgC",
-            "IAEoBRINCgVwb3NfeBgDIAEoAhINCgVwb3NfeRgEIAEoAhINCgVwb3NfehgF",
-            "IAEoAhIRCglmb3J3YXJkX3gYBiABKAISEQoJZm9yd2FyZF95GAcgASgCEhEK",
-            "CWZvcndhcmRfehgIIAEoAhINCgVyb3RfeBgJIAEoAhINCgVyb3RfeRgKIAEo",
-            "AhINCgVyb3RfehgLIAEoAhINCgVyb3RfdxgMIAEoAhIQCghkaXN0YW5jZRgN",
-            "IAEoAhINCgVzcGVlZBgOIAEoAiIcCgdDU19QSU5HEhEKCXRpbWVzdGFtcBgB",
-            "IAEoAyIcCgdTQ19QSU5HEhEKCXRpbWVzdGFtcBgBIAEoA2IGcHJvdG8z"));
+            "cm90X3kYBiABKAISDQoFcm90X3oYByABKAISDQoFcm90X3cYCCABKAIiiAIK",
+            "EVNDX05PVElfVVNFX1NLSUxMEgsKA2tleRgBIAEoAxIRCglza2lsbF9rZXkY",
+            "AiABKAMSEAoIc2tpbGxfaWQYAyABKAUSDQoFcG9zX3gYBCABKAISDQoFcG9z",
+            "X3kYBSABKAISDQoFcG9zX3oYBiABKAISEQoJZm9yd2FyZF94GAcgASgCEhEK",
+            "CWZvcndhcmRfeRgIIAEoAhIRCglmb3J3YXJkX3oYCSABKAISDQoFcm90X3gY",
+            "CiABKAISDQoFcm90X3kYCyABKAISDQoFcm90X3oYDCABKAISDQoFcm90X3cY",
+            "DSABKAISEAoIZGlzdGFuY2UYDiABKAISDQoFc3BlZWQYDyABKAIiHAoHQ1Nf",
+            "UElORxIRCgl0aW1lc3RhbXAYASABKAMiHAoHU0NfUElORxIRCgl0aW1lc3Rh",
+            "bXAYASABKANiBnByb3RvMw=="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
           new pbr::GeneratedClrTypeInfo(null, new pbr::GeneratedClrTypeInfo[] {
@@ -61,7 +62,7 @@ namespace GAME {
             new pbr::GeneratedClrTypeInfo(typeof(global::GAME.CS_MOVE_OBJECT), global::GAME.CS_MOVE_OBJECT.Parser, new[]{ "PosX", "PosY", "PosZ", "RotX", "RotY", "RotZ", "RotW", "Timestamp" }, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::GAME.SC_NOTI_MOVE_OBJECT), global::GAME.SC_NOTI_MOVE_OBJECT.Parser, new[]{ "Key", "PosX", "PosY", "PosZ", "RotX", "RotY", "RotZ", "RotW", "Timestamp" }, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::GAME.CS_USE_SKILL), global::GAME.CS_USE_SKILL.Parser, new[]{ "SkillId", "ForwardX", "ForwardY", "ForwardZ", "RotX", "RotY", "RotZ", "RotW" }, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::GAME.SC_NOTI_USE_SKILL), global::GAME.SC_NOTI_USE_SKILL.Parser, new[]{ "Key", "SkillId", "PosX", "PosY", "PosZ", "ForwardX", "ForwardY", "ForwardZ", "RotX", "RotY", "RotZ", "RotW", "Distance", "Speed" }, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::GAME.SC_NOTI_USE_SKILL), global::GAME.SC_NOTI_USE_SKILL.Parser, new[]{ "Key", "SkillKey", "SkillId", "PosX", "PosY", "PosZ", "ForwardX", "ForwardY", "ForwardZ", "RotX", "RotY", "RotZ", "RotW", "Distance", "Speed" }, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::GAME.CS_PING), global::GAME.CS_PING.Parser, new[]{ "Timestamp" }, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::GAME.SC_PING), global::GAME.SC_PING.Parser, new[]{ "Timestamp" }, null, null, null)
           }));
@@ -2148,6 +2149,7 @@ namespace GAME {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public SC_NOTI_USE_SKILL(SC_NOTI_USE_SKILL other) : this() {
       key_ = other.key_;
+      skillKey_ = other.skillKey_;
       skillId_ = other.skillId_;
       posX_ = other.posX_;
       posY_ = other.posY_;
@@ -2179,8 +2181,19 @@ namespace GAME {
       }
     }
 
+    /// <summary>Field number for the "skill_key" field.</summary>
+    public const int SkillKeyFieldNumber = 2;
+    private long skillKey_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public long SkillKey {
+      get { return skillKey_; }
+      set {
+        skillKey_ = value;
+      }
+    }
+
     /// <summary>Field number for the "skill_id" field.</summary>
-    public const int SkillIdFieldNumber = 2;
+    public const int SkillIdFieldNumber = 3;
     private int skillId_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public int SkillId {
@@ -2191,7 +2204,7 @@ namespace GAME {
     }
 
     /// <summary>Field number for the "pos_x" field.</summary>
-    public const int PosXFieldNumber = 3;
+    public const int PosXFieldNumber = 4;
     private float posX_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public float PosX {
@@ -2202,7 +2215,7 @@ namespace GAME {
     }
 
     /// <summary>Field number for the "pos_y" field.</summary>
-    public const int PosYFieldNumber = 4;
+    public const int PosYFieldNumber = 5;
     private float posY_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public float PosY {
@@ -2213,7 +2226,7 @@ namespace GAME {
     }
 
     /// <summary>Field number for the "pos_z" field.</summary>
-    public const int PosZFieldNumber = 5;
+    public const int PosZFieldNumber = 6;
     private float posZ_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public float PosZ {
@@ -2224,7 +2237,7 @@ namespace GAME {
     }
 
     /// <summary>Field number for the "forward_x" field.</summary>
-    public const int ForwardXFieldNumber = 6;
+    public const int ForwardXFieldNumber = 7;
     private float forwardX_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public float ForwardX {
@@ -2235,7 +2248,7 @@ namespace GAME {
     }
 
     /// <summary>Field number for the "forward_y" field.</summary>
-    public const int ForwardYFieldNumber = 7;
+    public const int ForwardYFieldNumber = 8;
     private float forwardY_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public float ForwardY {
@@ -2246,7 +2259,7 @@ namespace GAME {
     }
 
     /// <summary>Field number for the "forward_z" field.</summary>
-    public const int ForwardZFieldNumber = 8;
+    public const int ForwardZFieldNumber = 9;
     private float forwardZ_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public float ForwardZ {
@@ -2257,7 +2270,7 @@ namespace GAME {
     }
 
     /// <summary>Field number for the "rot_x" field.</summary>
-    public const int RotXFieldNumber = 9;
+    public const int RotXFieldNumber = 10;
     private float rotX_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public float RotX {
@@ -2268,7 +2281,7 @@ namespace GAME {
     }
 
     /// <summary>Field number for the "rot_y" field.</summary>
-    public const int RotYFieldNumber = 10;
+    public const int RotYFieldNumber = 11;
     private float rotY_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public float RotY {
@@ -2279,7 +2292,7 @@ namespace GAME {
     }
 
     /// <summary>Field number for the "rot_z" field.</summary>
-    public const int RotZFieldNumber = 11;
+    public const int RotZFieldNumber = 12;
     private float rotZ_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public float RotZ {
@@ -2290,7 +2303,7 @@ namespace GAME {
     }
 
     /// <summary>Field number for the "rot_w" field.</summary>
-    public const int RotWFieldNumber = 12;
+    public const int RotWFieldNumber = 13;
     private float rotW_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public float RotW {
@@ -2301,7 +2314,7 @@ namespace GAME {
     }
 
     /// <summary>Field number for the "distance" field.</summary>
-    public const int DistanceFieldNumber = 13;
+    public const int DistanceFieldNumber = 14;
     private float distance_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public float Distance {
@@ -2312,7 +2325,7 @@ namespace GAME {
     }
 
     /// <summary>Field number for the "speed" field.</summary>
-    public const int SpeedFieldNumber = 14;
+    public const int SpeedFieldNumber = 15;
     private float speed_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public float Speed {
@@ -2336,6 +2349,7 @@ namespace GAME {
         return true;
       }
       if (Key != other.Key) return false;
+      if (SkillKey != other.SkillKey) return false;
       if (SkillId != other.SkillId) return false;
       if (PosX != other.PosX) return false;
       if (PosY != other.PosY) return false;
@@ -2356,6 +2370,7 @@ namespace GAME {
     public override int GetHashCode() {
       int hash = 1;
       if (Key != 0L) hash ^= Key.GetHashCode();
+      if (SkillKey != 0L) hash ^= SkillKey.GetHashCode();
       if (SkillId != 0) hash ^= SkillId.GetHashCode();
       if (PosX != 0F) hash ^= PosX.GetHashCode();
       if (PosY != 0F) hash ^= PosY.GetHashCode();
@@ -2383,56 +2398,60 @@ namespace GAME {
         output.WriteRawTag(8);
         output.WriteInt64(Key);
       }
-      if (SkillId != 0) {
+      if (SkillKey != 0L) {
         output.WriteRawTag(16);
+        output.WriteInt64(SkillKey);
+      }
+      if (SkillId != 0) {
+        output.WriteRawTag(24);
         output.WriteInt32(SkillId);
       }
       if (PosX != 0F) {
-        output.WriteRawTag(29);
+        output.WriteRawTag(37);
         output.WriteFloat(PosX);
       }
       if (PosY != 0F) {
-        output.WriteRawTag(37);
+        output.WriteRawTag(45);
         output.WriteFloat(PosY);
       }
       if (PosZ != 0F) {
-        output.WriteRawTag(45);
+        output.WriteRawTag(53);
         output.WriteFloat(PosZ);
       }
       if (ForwardX != 0F) {
-        output.WriteRawTag(53);
+        output.WriteRawTag(61);
         output.WriteFloat(ForwardX);
       }
       if (ForwardY != 0F) {
-        output.WriteRawTag(61);
+        output.WriteRawTag(69);
         output.WriteFloat(ForwardY);
       }
       if (ForwardZ != 0F) {
-        output.WriteRawTag(69);
+        output.WriteRawTag(77);
         output.WriteFloat(ForwardZ);
       }
       if (RotX != 0F) {
-        output.WriteRawTag(77);
+        output.WriteRawTag(85);
         output.WriteFloat(RotX);
       }
       if (RotY != 0F) {
-        output.WriteRawTag(85);
+        output.WriteRawTag(93);
         output.WriteFloat(RotY);
       }
       if (RotZ != 0F) {
-        output.WriteRawTag(93);
+        output.WriteRawTag(101);
         output.WriteFloat(RotZ);
       }
       if (RotW != 0F) {
-        output.WriteRawTag(101);
+        output.WriteRawTag(109);
         output.WriteFloat(RotW);
       }
       if (Distance != 0F) {
-        output.WriteRawTag(109);
+        output.WriteRawTag(117);
         output.WriteFloat(Distance);
       }
       if (Speed != 0F) {
-        output.WriteRawTag(117);
+        output.WriteRawTag(125);
         output.WriteFloat(Speed);
       }
     }
@@ -2442,6 +2461,9 @@ namespace GAME {
       int size = 0;
       if (Key != 0L) {
         size += 1 + pb::CodedOutputStream.ComputeInt64Size(Key);
+      }
+      if (SkillKey != 0L) {
+        size += 1 + pb::CodedOutputStream.ComputeInt64Size(SkillKey);
       }
       if (SkillId != 0) {
         size += 1 + pb::CodedOutputStream.ComputeInt32Size(SkillId);
@@ -2492,6 +2514,9 @@ namespace GAME {
       }
       if (other.Key != 0L) {
         Key = other.Key;
+      }
+      if (other.SkillKey != 0L) {
+        SkillKey = other.SkillKey;
       }
       if (other.SkillId != 0) {
         SkillId = other.SkillId;
@@ -2547,54 +2572,58 @@ namespace GAME {
             break;
           }
           case 16: {
+            SkillKey = input.ReadInt64();
+            break;
+          }
+          case 24: {
             SkillId = input.ReadInt32();
             break;
           }
-          case 29: {
+          case 37: {
             PosX = input.ReadFloat();
             break;
           }
-          case 37: {
+          case 45: {
             PosY = input.ReadFloat();
             break;
           }
-          case 45: {
+          case 53: {
             PosZ = input.ReadFloat();
             break;
           }
-          case 53: {
+          case 61: {
             ForwardX = input.ReadFloat();
             break;
           }
-          case 61: {
+          case 69: {
             ForwardY = input.ReadFloat();
             break;
           }
-          case 69: {
+          case 77: {
             ForwardZ = input.ReadFloat();
             break;
           }
-          case 77: {
+          case 85: {
             RotX = input.ReadFloat();
             break;
           }
-          case 85: {
+          case 93: {
             RotY = input.ReadFloat();
             break;
           }
-          case 93: {
+          case 101: {
             RotZ = input.ReadFloat();
             break;
           }
-          case 101: {
+          case 109: {
             RotW = input.ReadFloat();
             break;
           }
-          case 109: {
+          case 117: {
             Distance = input.ReadFloat();
             break;
           }
-          case 117: {
+          case 125: {
             Speed = input.ReadFloat();
             break;
           }
