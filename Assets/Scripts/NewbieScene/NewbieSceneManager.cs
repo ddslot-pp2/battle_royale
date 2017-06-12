@@ -227,6 +227,8 @@ public class NewbieSceneManager : MonoBehaviour
         */
 
         //
+
+        /*
         if (is_interpolation)
         {
             UpdateEnemiesTank();
@@ -235,6 +237,8 @@ public class NewbieSceneManager : MonoBehaviour
         {
             UpdateEnemiesTank2();
         }
+        */
+        UpdateEnemiesTank2();
 
         //ping_text.text = protobuf_session.ping_time.ToString();
         delta_text.text = Time.deltaTime.ToString();
