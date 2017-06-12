@@ -402,7 +402,7 @@ public class NewbieSceneManager : MonoBehaviour
 
             enemies[other.Key] = enemy_tank_info;
 
-            Debug.Log("count: " + enemies.Count);
+            //Debug.Log("count: " + enemies.Count);
         }
     }
 
@@ -430,7 +430,7 @@ public class NewbieSceneManager : MonoBehaviour
         }
 
         enemies[key] = enemy_tank_info;
-        Debug.Log("count: " + enemies.Count);
+        //Debug.Log("count: " + enemies.Count);
     }
 
     void processor_SC_NOTI_DESTROY_SKILL(GAME.SC_NOTI_DESTROY_SKILL read)
@@ -453,7 +453,7 @@ public class NewbieSceneManager : MonoBehaviour
     void processor_SC_NOTI_MOVE_OBJECT(GAME.SC_NOTI_MOVE_OBJECT read)
     {
         var key = read.Key;
-        Debug.Log("key 움직임: " + key);
+        //Debug.Log("key 움직임: " + key);
         var pos = new Vector3(read.PosX, read.PosY, read.PosZ);
         var rot = new Quaternion(read.RotX, read.RotY, read.RotZ, read.RotW);
         Int64 timestamp = read.Timestamp;
@@ -599,13 +599,13 @@ public class NewbieSceneManager : MonoBehaviour
 
     void HandleAddBullet(Int64 key, BulletInfo bullet_info)
     {
-        Debug.Log("추가 키: " + key);
+        //Debug.Log("추가 키: " + key);
         bullets[key] = bullet_info;
     }
 
     void HandleDestroyBullet(Int64 key)
     {
-        Debug.Log("삭제 키: " + key);
+        //Debug.Log("삭제 키: " + key);
         //
         var bullet_info = bullets[key];
 
