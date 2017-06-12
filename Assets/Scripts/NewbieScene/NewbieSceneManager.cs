@@ -238,6 +238,7 @@ public class NewbieSceneManager : MonoBehaviour
             UpdateEnemiesTank2();
         }
         */
+
         UpdateEnemiesTank2();
 
         //ping_text.text = protobuf_session.ping_time.ToString();
@@ -300,7 +301,6 @@ public class NewbieSceneManager : MonoBehaviour
     void UpdateEnemiesTank2()
     {
         //ping_text.text = Time.deltaTime.ToString();
-
         foreach (var enemy_info in enemies)
         {
             var enemyTankInfo = enemy_info.Value;
@@ -314,11 +314,10 @@ public class NewbieSceneManager : MonoBehaviour
             var pos1 = enemyTankInfo.obj.transform.position;
 
             var r = CheckNearBy(pos2, pos1);
-            if (r) return;
+            if (r) continue;
 
             var dir = enemyTankInfo.snapshots[1].pos - enemyTankInfo.obj.transform.position;
             dir.Normalize();
-
 
 
             enemyTankInfo.obj.transform.forward = Vector3.Slerp(enemyTankInfo.obj.transform.forward, dir, Time.deltaTime * 10.0f);
@@ -454,6 +453,7 @@ public class NewbieSceneManager : MonoBehaviour
     void processor_SC_NOTI_MOVE_OBJECT(GAME.SC_NOTI_MOVE_OBJECT read)
     {
         var key = read.Key;
+        Debug.Log("key 움직임: " + key);
         var pos = new Vector3(read.PosX, read.PosY, read.PosZ);
         var rot = new Quaternion(read.RotX, read.RotY, read.RotZ, read.RotW);
         Int64 timestamp = read.Timestamp;
