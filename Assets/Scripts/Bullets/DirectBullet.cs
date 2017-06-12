@@ -27,10 +27,12 @@ public class DirectBullet : MonoBehaviour {
     {
         transform.position += transform.forward * Time.deltaTime * speed;  
 
+        /*
         if (Vector3.Distance(first, transform.position) >= distance)
         {
             Destroy(gameObject);
         }
+        */
     }
 
     public void GetDamageType(int damage, int hitCount, GameObject attacker, float distance, float speed)
@@ -49,8 +51,10 @@ public class DirectBullet : MonoBehaviour {
         this.distance = distance;
     }
 
+    //
     void OnTriggerEnter(Collider other)
     {
+        /*
         Debug.Log(other.name);
         //충돌한 게임오브젝트의 태그값 비교
         if (other.transform.tag == "Tank")
@@ -76,5 +80,6 @@ public class DirectBullet : MonoBehaviour {
                 Destroy(gameObject);
             }
         }
+        */
     }
 }

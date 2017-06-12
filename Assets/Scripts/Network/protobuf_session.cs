@@ -180,6 +180,9 @@ public class protobuf_session : MonoBehaviour
     public delegate void SC_NOTI_USE_SKILL(GAME.SC_NOTI_USE_SKILL read);
     public SC_NOTI_USE_SKILL processor_SC_NOTI_USE_SKILL = null;
 
+    // SC_NOTI_DESTROY_SKILL
+    public delegate void SC_NOTI_DESTROY_SKILL(GAME.SC_NOTI_DESTROY_SKILL read);
+    public SC_NOTI_DESTROY_SKILL processor_SC_NOTI_DESTROY_SKILL = null;
 
     // 패킷 처리
     public void process_packet()
@@ -267,7 +270,14 @@ public class protobuf_session : MonoBehaviour
                         processor_SC_NOTI_USE_SKILL(read);
                     }
                 }
-
+                else if ((network.opcode)_opcode == network.opcode.SC_NOTI_DESTROY_SKILL)
+                {
+                    GAME.SC_NOTI_DESTROY_SKILL read = GAME.SC_NOTI_DESTROY_SKILL.Parser.ParseFrom(proto_buffer);
+                    if (processor_SC_NOTI_DESTROY_SKILL != null)
+                    {
+                        processor_SC_NOTI_DESTROY_SKILL(read);
+                    }
+                }
             }
             catch(Exception e)
             {

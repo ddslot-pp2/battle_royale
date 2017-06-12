@@ -35,7 +35,14 @@ public class NewbieSceneManager : MonoBehaviour
         }
     }
 
+    class BulletInfo
+    {
+        public GameObject bullet;
+        //public int damage = 0;
+    }
+
     Dictionary<Int64, EnemyTankInfo> enemies = null;
+    Dictionary<Int64, BulletInfo> bullets = null;
 
     float interval_;
     public Vector3 pos_;
@@ -107,11 +114,12 @@ public class NewbieSceneManager : MonoBehaviour
     // 여기에 이 씬에서 사용할 패킷 callback을 등록
     void RegisterProcessorHandler()
     {
-        session_.processor_SC_ENTER_FIELD      = processor_SC_ENTER_FIELD;
-        session_.processor_SC_NOTI_ENTER_FIELD = processor_SC_NOTI_ENTER_FIELD;
-        session_.processor_SC_NOTI_MOVE_OBJECT = processor_SC_NOTI_MOVE_OBJECT;
-        session_.processor_SC_NOTI_LEAVE_FIELD = processor_SC_NOTI_LEAVE_FIELD;
-        session_.processor_SC_NOTI_USE_SKILL   = processor_SC_NOTI_USE_SKILL;
+        session_.processor_SC_ENTER_FIELD        = processor_SC_ENTER_FIELD;
+        session_.processor_SC_NOTI_ENTER_FIELD   = processor_SC_NOTI_ENTER_FIELD;
+        session_.processor_SC_NOTI_MOVE_OBJECT   = processor_SC_NOTI_MOVE_OBJECT;
+        session_.processor_SC_NOTI_LEAVE_FIELD   = processor_SC_NOTI_LEAVE_FIELD;
+        session_.processor_SC_NOTI_USE_SKILL     = processor_SC_NOTI_USE_SKILL;
+        session_.processor_SC_NOTI_DESTROY_SKILL = processor_SC_NOTI_DESTROY_SKILL;
     }
 
     void init()
@@ -144,6 +152,7 @@ public class NewbieSceneManager : MonoBehaviour
         Screen.sleepTimeout = SleepTimeout.NeverSleep;
 
         enemies = new Dictionary<Int64, EnemyTankInfo>();
+        bullets = new Dictionary<Int64, BulletInfo>();
 
         session_ = protobuf_session.getInstance();
 
@@ -421,6 +430,23 @@ public class NewbieSceneManager : MonoBehaviour
         Debug.Log("count: " + enemies.Count);
     }
 
+    void processor_SC_NOTI_DESTROY_SKILL(GAME.SC_NOTI_DESTROY_SKILL read)
+    {
+        Debug.Log("noti destroy skill recevied\n");
+        var skill_key = read.SkillKey;
+        var target_key = read.TargetKey;
+        var damage = read.Damage;
+
+        // 처리해주고
+        if (target_key > 0)
+        {
+            Debug.Log("맞은 타겟: " + target_key);
+        }
+
+
+        HandleDestroyBullet(skill_key);
+    }
+
     void processor_SC_NOTI_MOVE_OBJECT(GAME.SC_NOTI_MOVE_OBJECT read)
     {
         var key = read.Key;
@@ -495,6 +521,7 @@ public class NewbieSceneManager : MonoBehaviour
     void processor_SC_NOTI_USE_SKILL(GAME.SC_NOTI_USE_SKILL read)
     {
         var key = read.Key;
+        var skill_key = read.SkillKey;
         var skill_id = read.SkillId;
         var rot = new Quaternion(read.RotX, read.RotY, read.RotZ, read.RotW);
         var pos = new Vector3(read.PosX, read.PosY, read.PosZ);
@@ -518,6 +545,11 @@ public class NewbieSceneManager : MonoBehaviour
                 var bullet = Instantiate(state.bullet, pos, rot);
                 bullet.transform.localScale = new Vector3(bullet.transform.localScale.x * state.bulletSize, bullet.transform.localScale.y * state.bulletSize, bullet.transform.localScale.z * state.bulletSize);
                 bullet.GetComponent<DirectBullet>().SetProperty(speed, distance);
+
+                var bullet_info = new BulletInfo();
+                bullet_info.bullet = bullet;
+
+                HandleAddBullet(skill_key, bullet_info);
             }
             //var top = player.Find("Top");
             return;
@@ -548,11 +580,31 @@ public class NewbieSceneManager : MonoBehaviour
 
                 bullet.transform.localScale = new Vector3(bullet.transform.localScale.x * state.bulletSize, bullet.transform.localScale.y * state.bulletSize, bullet.transform.localScale.z * state.bulletSize);
                 bullet.GetComponent<DirectBullet>().SetProperty(speed, distance);
+
+                var bullet_info = new BulletInfo();
+                bullet_info.bullet = bullet;
+
+                HandleAddBullet(skill_key, bullet_info);
             }
          
         }
 
 
         Debug.Log("패킷받음");
+    }
+
+    void HandleAddBullet(Int64 key, BulletInfo bullet_info)
+    {
+        Debug.Log("추가 키: " + key);
+        bullets[key] = bullet_info;
+    }
+
+    void HandleDestroyBullet(Int64 key)
+    {
+        Debug.Log("삭제 키: " + key);
+        //
+        var bullet_info = bullets[key];
+
+        Destroy(bullet_info.bullet);
     }
 }
